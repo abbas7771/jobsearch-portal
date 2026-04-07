@@ -83,23 +83,13 @@
     
     <div class="filters">
       <select class="filter-btn" id="dateFilter" onchange="applyFilters()">
-        <option value="" id="opt-date">Date Published</option>
-        <option value="1" id="opt-24h">Last 24 hours</option>
-        <option value="7" id="opt-7d">Last 7 days</option>
-        <option value="30" id="opt-30d">Last 30 days</option>
+        <option value="">--</option>
       </select>
       <select class="filter-btn" id="typeFilter" onchange="applyFilters()">
-        <option value="" id="opt-type">Job Type</option>
-        <option value="full-time" id="opt-ft">Full-time</option>
-        <option value="part-time" id="opt-pt">Part-time</option>
-        <option value="remote" id="opt-rem">Remote</option>
-        <option value="contract" id="opt-con">Contract</option>
+        <option value="">--</option>
       </select>
       <select class="filter-btn" id="experienceFilter" onchange="applyFilters()">
-        <option value="" id="opt-exp">Experience</option>
-        <option value="entry" id="opt-entry">Entry level</option>
-        <option value="mid" id="opt-mid">Mid-level</option>
-        <option value="senior" id="opt-sen">Senior</option>
+        <option value="">--</option>
       </select>
     </div>
   </div>
@@ -377,7 +367,7 @@ function setLanguage(lang) {
   
   // Mark active option
   document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
-  event.target.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
 }
 
 function toggleLangDropdown() {
@@ -396,22 +386,31 @@ function updateUI() {
   document.getElementById('locationInput').placeholder = t('locationPlaceholder');
   document.getElementById('searchBtn').textContent = t('searchBtn');
   
-  // Update filter options
-  document.getElementById('opt-date').textContent = t('datePublished');
-  document.getElementById('opt-24h').textContent = t('last24h');
-  document.getElementById('opt-7d').textContent = t('last7d');
-  document.getElementById('opt-30d').textContent = t('last30d');
+  // Rebuild filter options with translations
+  const dateFilter = document.getElementById('dateFilter');
+  dateFilter.innerHTML = `
+    <option value="">${t('datePublished')}</option>
+    <option value="1">${t('last24h')}</option>
+    <option value="7">${t('last7d')}</option>
+    <option value="30">${t('last30d')}</option>
+  `;
   
-  document.getElementById('opt-type').textContent = t('jobType');
-  document.getElementById('opt-ft').textContent = t('fullTime');
-  document.getElementById('opt-pt').textContent = t('partTime');
-  document.getElementById('opt-rem').textContent = t('remote');
-  document.getElementById('opt-con').textContent = t('contract');
+  const typeFilter = document.getElementById('typeFilter');
+  typeFilter.innerHTML = `
+    <option value="">${t('jobType')}</option>
+    <option value="full-time">${t('fullTime')}</option>
+    <option value="part-time">${t('partTime')}</option>
+    <option value="remote">${t('remote')}</option>
+    <option value="contract">${t('contract')}</option>
+  `;
   
-  document.getElementById('opt-exp').textContent = t('experience');
-  document.getElementById('opt-entry').textContent = t('entryLevel');
-  document.getElementById('opt-mid').textContent = t('midLevel');
-  document.getElementById('opt-sen').textContent = t('senior');
+  const expFilter = document.getElementById('experienceFilter');
+  expFilter.innerHTML = `
+    <option value="">${t('experience')}</option>
+    <option value="entry">${t('entryLevel')}</option>
+    <option value="mid">${t('midLevel')}</option>
+    <option value="senior">${t('senior')}</option>
+  `;
 }
 
 // Initialize
