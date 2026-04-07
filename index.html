@@ -75,20 +75,32 @@
     <h1 id="title" style="font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem;">Find Your Next Job</h1>
     <p id="subtitle" style="font-size: 14px; color: #666; margin-bottom: 1rem;">Search from 500K+ job listings worldwide</p>
     
-    <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="Search jobs...">
-      <input type="text" id="locationInput" class="search-input location" placeholder="Location...">
-      <button onclick="searchJobs()" class="search-btn" id="searchBtn">Find</button>
+    <div class="search-container" style="grid-template-columns: 1fr 1fr auto; gap: 1rem;">
+      <div style="position: relative; display: flex; align-items: center;">
+        <span style="position: absolute; left: 0.75rem; color: #999; font-size: 16px;">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search jobs..." style="padding-left: 2.5rem;">
+      </div>
+      <div style="position: relative; display: flex; align-items: center;">
+        <span style="position: absolute; left: 0.75rem; color: #0066cc; font-size: 16px;">📍</span>
+        <input type="text" id="locationInput" class="search-input" placeholder="Location..." style="padding-left: 2.5rem; border: 2px solid #0066cc;">
+      </div>
+      <button onclick="searchJobs()" class="search-btn" id="searchBtn" style="background: #0066cc; color: white; padding: 0.75rem 2rem;">Find</button>
     </div>
     
-    <div class="filters">
-      <select class="filter-btn" id="dateFilter" onchange="applyFilters()">
+    <div class="filters" style="gap: 0.3rem; margin-top: 1rem;">
+      <select class="filter-btn" id="dateFilter" onchange="applyFilters()" style="padding: 0.5rem 0.8rem; font-size: 12px;">
         <option value="">--</option>
       </select>
-      <select class="filter-btn" id="typeFilter" onchange="applyFilters()">
+      <select class="filter-btn" id="typeFilter" onchange="applyFilters()" style="padding: 0.5rem 0.8rem; font-size: 12px;">
         <option value="">--</option>
       </select>
-      <select class="filter-btn" id="experienceFilter" onchange="applyFilters()">
+      <select class="filter-btn" id="experienceFilter" onchange="applyFilters()" style="padding: 0.5rem 0.8rem; font-size: 12px;">
+        <option value="">--</option>
+      </select>
+      <select class="filter-btn" id="placementFilter" onchange="applyFilters()" style="padding: 0.5rem 0.8rem; font-size: 12px;">
+        <option value="">--</option>
+      </select>
+      <select class="filter-btn" id="salaryFilter" onchange="applyFilters()" style="padding: 0.5rem 0.8rem; font-size: 12px;">
         <option value="">--</option>
       </select>
     </div>
@@ -121,6 +133,10 @@ const translations = {
     entryLevel: "Entry level",
     midLevel: "Mid-level",
     senior: "Senior",
+    placement: "Placement",
+    office: "Office",
+    hybrid: "Hybrid",
+    salary: "Salary",
     results: "Results: {count} jobs found"
   },
   ru: {
@@ -142,6 +158,10 @@ const translations = {
     entryLevel: "Начинающий",
     midLevel: "Средний уровень",
     senior: "Старший",
+    placement: "Размещение",
+    office: "В офисе",
+    hybrid: "Гибридно",
+    salary: "Зарплата",
     results: "Результаты: {count} вакансий найдено"
   },
   tr: {
@@ -163,6 +183,10 @@ const translations = {
     entryLevel: "Giriş Seviyesi",
     midLevel: "Orta Seviye",
     senior: "Kıdemli",
+    placement: "Yer",
+    office: "Ofiste",
+    hybrid: "Hibrit",
+    salary: "Maaş",
     results: "Sonuçlar: {count} iş bulundu"
   },
   zh: {
@@ -184,6 +208,10 @@ const translations = {
     entryLevel: "入门级",
     midLevel: "中级",
     senior: "高级",
+    placement: "位置",
+    office: "办公室",
+    hybrid: "混合",
+    salary: "工资",
     results: "结果：找到{count}个职位"
   },
   es: {
@@ -205,6 +233,10 @@ const translations = {
     entryLevel: "Nivel de entrada",
     midLevel: "Nivel intermedio",
     senior: "Nivel senior",
+    placement: "Ubicación",
+    office: "Oficina",
+    hybrid: "Híbrido",
+    salary: "Salario",
     results: "Resultados: {count} empleos encontrados"
   },
   fr: {
@@ -226,6 +258,10 @@ const translations = {
     entryLevel: "Débutant",
     midLevel: "Intermédiaire",
     senior: "Senior",
+    placement: "Localisation",
+    office: "Bureau",
+    hybrid: "Hybride",
+    salary: "Salaire",
     results: "Résultats: {count} emplois trouvés"
   },
   de: {
@@ -247,6 +283,10 @@ const translations = {
     entryLevel: "Anfänger",
     midLevel: "Mittelstufe",
     senior: "Senior",
+    placement: "Platzierung",
+    office: "Büro",
+    hybrid: "Hybrid",
+    salary: "Gehalt",
     results: "Ergebnisse: {count} Stellen gefunden"
   },
   it: {
@@ -268,6 +308,10 @@ const translations = {
     entryLevel: "Livello base",
     midLevel: "Livello intermedio",
     senior: "Senior",
+    placement: "Posizionamento",
+    office: "Ufficio",
+    hybrid: "Ibrido",
+    salary: "Stipendio",
     results: "Risultati: {count} lavori trovati"
   },
   pt: {
@@ -289,6 +333,10 @@ const translations = {
     entryLevel: "Nível iniciante",
     midLevel: "Nível intermediário",
     senior: "Senior",
+    placement: "Colocação",
+    office: "Escritório",
+    hybrid: "Híbrido",
+    salary: "Salário",
     results: "Resultados: {count} empregos encontrados"
   },
   ja: {
@@ -310,6 +358,10 @@ const translations = {
     entryLevel: "初級",
     midLevel: "中級",
     senior: "シニア",
+    placement: "配置",
+    office: "オフィス",
+    hybrid: "ハイブリッド",
+    salary: "給与",
     results: "結果：{count}件の求人が見つかりました"
   },
   ko: {
@@ -331,6 +383,10 @@ const translations = {
     entryLevel: "초급",
     midLevel: "중급",
     senior: "시니어",
+    placement: "배치",
+    office: "사무실",
+    hybrid: "하이브리드",
+    salary: "급여",
     results: "결과: {count}개의 채용공고 찾음"
   },
   ar: {
@@ -352,6 +408,10 @@ const translations = {
     entryLevel: "مستوى الدخول",
     midLevel: "المستوى الأوسط",
     senior: "أول",
+    placement: "الموضع",
+    office: "في المكتب",
+    hybrid: "مختلط",
+    salary: "الراتب",
     results: "النتائج: {count} وظيفة وجدت"
   }
 };
@@ -386,7 +446,6 @@ function updateUI() {
   document.getElementById('locationInput').placeholder = t('locationPlaceholder');
   document.getElementById('searchBtn').textContent = t('searchBtn');
   
-  // Rebuild filter options with translations
   const dateFilter = document.getElementById('dateFilter');
   dateFilter.innerHTML = `
     <option value="">${t('datePublished')}</option>
@@ -410,6 +469,23 @@ function updateUI() {
     <option value="entry">${t('entryLevel')}</option>
     <option value="mid">${t('midLevel')}</option>
     <option value="senior">${t('senior')}</option>
+  `;
+  
+  const placementFilter = document.getElementById('placementFilter');
+  placementFilter.innerHTML = `
+    <option value="">${t('placement')}</option>
+    <option value="remote">${t('remote')}</option>
+    <option value="office">${t('office')}</option>
+    <option value="hybrid">${t('hybrid')}</option>
+  `;
+  
+  const salaryFilter = document.getElementById('salaryFilter');
+  salaryFilter.innerHTML = `
+    <option value="">${t('salary')}</option>
+    <option value="0-30k">$0-30K</option>
+    <option value="30-60k">$30-60K</option>
+    <option value="60-100k">$60-100K</option>
+    <option value="100k+">$100K+</option>
   `;
 }
 
@@ -441,7 +517,9 @@ function searchJobs() {
   displayJobs(sampleJobs);
 }
 
-function applyFilters() {}
+function applyFilters() {
+  // Filter functionality here
+}
 
 displayJobs(sampleJobs);
 </script>
