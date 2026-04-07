@@ -182,6 +182,83 @@
       padding: 3rem; 
       color: var(--secondary);
     }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      overflow-y: auto;
+    }
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: white;
+      max-width: 700px;
+      width: 90%;
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--secondary);
+    }
+    .modal-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+    .modal-company {
+      font-size: 1.1rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .modal-meta {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .modal-meta-item {
+      color: #666;
+    }
+    .modal-description {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .modal-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .modal-btn:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -225,354 +302,48 @@
   </div>
 </div>
 
-<script>
-// Translations
-const translations = {
-  en: {
-    title: "Global Jobs Portal",
-    subtitle: "Find remote jobs worldwide",
-    searchBtn: "Search",
-    results: "Found {count} jobs",
-    datePublished: "Date Published",
-    last24h: "Last 24 hours",
-    last7d: "Last 7 days",
-    last30d: "Last 30 days",
-    jobType: "Job Type",
-    fullTime: "Full-time",
-    partTime: "Part-time",
-    remote: "Remote",
-    contract: "Contract",
-    experience: "Experience",
-    entry: "Entry Level",
-    mid: "Mid Level",
-    senior: "Senior",
-    location: "Location Type",
-    office: "Office",
-    hybrid: "Hybrid",
-    salary: "Salary",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  ru: {
-    title: "Глобальный портал вакансий",
-    subtitle: "Найдите удаленную работу во всем мире",
-    searchBtn: "Поиск",
-    results: "Найдено {count} вакансий",
-    datePublished: "Дата публикации",
-    last24h: "Последние 24 часа",
-    last7d: "Последние 7 дней",
-    last30d: "Последние 30 дней",
-    jobType: "Тип работы",
-    fullTime: "Полный день",
-    partTime: "Неполный день",
-    remote: "Удаленно",
-    contract: "Контракт",
-    experience: "Опыт",
-    entry: "Начальный уровень",
-    mid: "Средний уровень",
-    senior: "Старший",
-    location: "Тип расположения",
-    office: "Офис",
-    hybrid: "Гибридный",
-    salary: "Зарплата",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  tr: {
-    title: "Küresel İş Portalı",
-    subtitle: "Dünya çapında uzak işler bulun",
-    searchBtn: "Ara",
-    results: "{count} iş bulundu",
-    datePublished: "Yayın Tarihi",
-    last24h: "Son 24 saat",
-    last7d: "Son 7 gün",
-    last30d: "Son 30 gün",
-    jobType: "İş Türü",
-    fullTime: "Tam zamanlı",
-    partTime: "Yarı zamanlı",
-    remote: "Uzaktan",
-    contract: "Sözleşme",
-    experience: "Deneyim",
-    entry: "Giriş Seviyesi",
-    mid: "Orta Seviye",
-    senior: "Kıdemli",
-    location: "Konum Türü",
-    office: "Ofis",
-    hybrid: "Hibrit",
-    salary: "Maaş",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  zh: {
-    title: "全球工作门户",
-    subtitle: "找到全球远程工作",
-    searchBtn: "搜索",
-    results: "找到 {count} 个职位",
-    datePublished: "发布日期",
-    last24h: "最后24小时",
-    last7d: "最后7天",
-    last30d: "最后30天",
-    jobType: "工作类型",
-    fullTime: "全职",
-    partTime: "兼职",
-    remote: "远程",
-    contract: "合同",
-    experience: "经验",
-    entry: "入门级",
-    mid: "中级",
-    senior: "高级",
-    location: "位置类型",
-    office: "办公室",
-    hybrid: "混合",
-    salary: "薪资",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  es: {
-    title: "Portal Global de Empleos",
-    subtitle: "Encuentra empleos remotos en todo el mundo",
-    searchBtn: "Buscar",
-    results: "Se encontraron {count} empleos",
-    datePublished: "Fecha de Publicación",
-    last24h: "Últimas 24 horas",
-    last7d: "Últimos 7 días",
-    last30d: "Últimos 30 días",
-    jobType: "Tipo de Trabajo",
-    fullTime: "Tiempo completo",
-    partTime: "Tiempo parcial",
-    remote: "Remoto",
-    contract: "Contrato",
-    experience: "Experiencia",
-    entry: "Nivel Inicial",
-    mid: "Nivel Intermedio",
-    senior: "Senior",
-    location: "Tipo de Ubicación",
-    office: "Oficina",
-    hybrid: "Híbrido",
-    salary: "Salario",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  fr: {
-    title: "Portail Mondial d'Emploi",
-    subtitle: "Trouver des emplois distants dans le monde",
-    searchBtn: "Rechercher",
-    results: "{count} emplois trouvés",
-    datePublished: "Date de Publication",
-    last24h: "Dernières 24 heures",
-    last7d: "7 derniers jours",
-    last30d: "30 derniers jours",
-    jobType: "Type d'Emploi",
-    fullTime: "Temps plein",
-    partTime: "Temps partiel",
-    remote: "Télétravail",
-    contract: "Contrat",
-    experience: "Expérience",
-    entry: "Niveau Débutant",
-    mid: "Niveau Intermédiaire",
-    senior: "Senior",
-    location: "Type de Localisation",
-    office: "Bureau",
-    hybrid: "Hybride",
-    salary: "Salaire",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  de: {
-    title: "Globales Jobportal",
-    subtitle: "Finden Sie Remote-Jobs weltweit",
-    searchBtn: "Suche",
-    results: "{count} Jobs gefunden",
-    datePublished: "Veröffentlichungsdatum",
-    last24h: "Letzte 24 Stunden",
-    last7d: "Letzte 7 Tage",
-    last30d: "Letzte 30 Tage",
-    jobType: "Jobtyp",
-    fullTime: "Vollzeitarbeit",
-    partTime: "Teilzeitarbeit",
-    remote: "Remote",
-    contract: "Vertrag",
-    experience: "Erfahrung",
-    entry: "Anfängerniveau",
-    mid: "Mittelniveau",
-    senior: "Senior",
-    location: "Standorttyp",
-    office: "Büro",
-    hybrid: "Hybrid",
-    salary: "Gehalt",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  it: {
-    title: "Portale Lavori Globale",
-    subtitle: "Trova lavori remoti in tutto il mondo",
-    searchBtn: "Cerca",
-    results: "{count} lavori trovati",
-    datePublished: "Data di Pubblicazione",
-    last24h: "Ultime 24 ore",
-    last7d: "Ultimi 7 giorni",
-    last30d: "Ultimi 30 giorni",
-    jobType: "Tipo di Lavoro",
-    fullTime: "Tempo pieno",
-    partTime: "Tempo parziale",
-    remote: "Remoto",
-    contract: "Contratto",
-    experience: "Esperienza",
-    entry: "Livello Principiante",
-    mid: "Livello Intermedio",
-    senior: "Senior",
-    location: "Tipo di Localizzazione",
-    office: "Ufficio",
-    hybrid: "Ibrido",
-    salary: "Stipendio",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  pt: {
-    title: "Portal Global de Empregos",
-    subtitle: "Encontre empregos remotos em todo o mundo",
-    searchBtn: "Pesquisar",
-    results: "{count} empregos encontrados",
-    datePublished: "Data de Publicação",
-    last24h: "Últimas 24 horas",
-    last7d: "Últimos 7 dias",
-    last30d: "Últimos 30 dias",
-    jobType: "Tipo de Emprego",
-    fullTime: "Tempo integral",
-    partTime: "Tempo parcial",
-    remote: "Remoto",
-    contract: "Contrato",
-    experience: "Experiência",
-    entry: "Nível Iniciante",
-    mid: "Nível Intermediário",
-    senior: "Senior",
-    location: "Tipo de Localização",
-    office: "Escritório",
-    hybrid: "Híbrido",
-    salary: "Salário",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  ja: {
-    title: "グローバルジョブポータル",
-    subtitle: "世界中のリモートジョブを検索",
-    searchBtn: "検索",
-    results: "{count} 件の職位が見つかりました",
-    datePublished: "公開日",
-    last24h: "過去24時間",
-    last7d: "過去7日間",
-    last30d: "過去30日間",
-    jobType: "職種",
-    fullTime: "フルタイム",
-    partTime: "パートタイム",
-    remote: "リモート",
-    contract: "契約",
-    experience: "経験",
-    entry: "初級レベル",
-    mid: "中級レベル",
-    senior: "シニア",
-    location: "勤務地タイプ",
-    office: "オフィス",
-    hybrid: "ハイブリッド",
-    salary: "給与",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  ko: {
-    title: "글로벌 채용 포털",
-    subtitle: "전 세계 원격 직업 찾기",
-    searchBtn: "검색",
-    results: "{count}개의 채용공고를 찾았습니다",
-    datePublished: "게시 날짜",
-    last24h: "지난 24시간",
-    last7d: "지난 7일",
-    last30d: "지난 30일",
-    jobType: "직무 유형",
-    fullTime: "전일제",
-    partTime: "시간제",
-    remote: "원격 근무",
-    contract: "계약",
-    experience: "경험",
-    entry: "초급",
-    mid: "중급",
-    senior: "시니어",
-    location: "근무 지역",
-    office: "사무실",
-    hybrid: "하이브리드",
-    salary: "급여",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  },
-  ar: {
-    title: "بوابة الوظائف العالمية",
-    subtitle: "ابحث عن الوظائف البعيدة في جميع أنحاء العالم",
-    searchBtn: "بحث",
-    results: "تم العثور على {count} وظيفة",
-    datePublished: "تاريخ النشر",
-    last24h: "آخر 24 ساعة",
-    last7d: "آخر 7 أيام",
-    last30d: "آخر 30 يومًا",
-    jobType: "نوع الوظيفة",
-    fullTime: "بدوام كامل",
-    partTime: "بدوام جزئي",
-    remote: "عن بُعد",
-    contract: "عقد",
-    experience: "الخبرة",
-    entry: "مستوى الدخول",
-    mid: "المستوى الأوسط",
-    senior: "أول",
-    location: "نوع الموقع",
-    office: "في المكتب",
-    hybrid: "مختلط",
-    salary: "الراتب",
-    salary030k: "$0-30K",
-    salary3060k: "$30-60K",
-    salary60100k: "$60-100K",
-    salary100k: "$100K+"
-  }
-};
+<!-- Job Detail Modal -->
+<div id="jobModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeJobModal()">✕</button>
+    <div id="jobDetails"></div>
+  </div>
+</div>
 
-// Real Jobs Data
-const jobs = [
-  { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more roles available", type: "full-time" },
-  { id: 2, title: "HackerRank Is Hiring", company: "HackerRank (YC S11)", location: "New York", description: "Developer hiring platform roles", type: "full-time" },
-  { id: 3, title: "PostHog Is Hiring", company: "PostHog (YC W20)", location: "Remote", description: "Product analytics platform roles", type: "full-time" },
-  { id: 4, title: "Hightouch Is Hiring", company: "Hightouch (YC S19)", location: "Remote", description: "Data integration platform roles", type: "full-time" },
-  { id: 5, title: "Mbodi AI Is Hiring", company: "Mbodi AI (YC P25)", location: "Remote", description: "Healthcare AI startup roles", type: "full-time" },
-  { id: 6, title: "Charge Robotics Hiring", company: "Charge Robotics (YC S21)", location: "Remote", description: "Software and hardware engineers", type: "full-time" },
-  { id: 7, title: "Voiceflow Is Hiring", company: "Voiceflow", location: "Remote", description: "Conversational AI platform roles", type: "full-time" },
-  { id: 8, title: "Patreon Is Hiring", company: "Patreon", location: "Remote", description: "Creator platform and payments", type: "full-time" },
-  { id: 9, title: "Anthropic Is Hiring", company: "Anthropic", location: "San Francisco", description: "AI safety and research roles", type: "full-time" },
-  { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development opportunities", type: "full-time" }
+<script>
+const jobsData = [
+  { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more roles available", type: "full-time", fullDesc: "Join 9 Mothers as they revolutionize robotics. Lead teams, drive innovation, and shape the future of automation." },
+  { id: 2, title: "HackerRank Is Hiring", company: "HackerRank (YC S11)", location: "New York", description: "Developer hiring platform roles", type: "full-time", fullDesc: "Help companies hire the best developers. Work on a platform trusted by 2500+ companies worldwide." },
+  { id: 3, title: "PostHog Is Hiring", company: "PostHog (YC W20)", location: "Remote", description: "Product analytics platform roles", type: "full-time", fullDesc: "Build product analytics tools that help engineers understand user behavior and ship better products." },
+  { id: 4, title: "Hightouch Is Hiring", company: "Hightouch (YC S19)", location: "Remote", description: "Data integration platform roles", type: "full-time", fullDesc: "Work on data infrastructure that powers insights for thousands of companies." },
+  { id: 5, title: "Mbodi AI Is Hiring", company: "Mbodi AI (YC P25)", location: "Remote", description: "Healthcare AI startup roles", type: "full-time", fullDesc: "Apply AI to healthcare. Build systems that save lives and improve patient outcomes." },
+  { id: 6, title: "Charge Robotics Hiring", company: "Charge Robotics (YC S21)", location: "Remote", description: "Software and hardware engineers", type: "full-time", fullDesc: "Design autonomous vehicle charging solutions. Hardware + software innovation." },
+  { id: 7, title: "Voiceflow Is Hiring", company: "Voiceflow", location: "Remote", description: "Conversational AI platform roles", type: "full-time", fullDesc: "Build the future of conversational AI. Help companies deploy voice and chat applications." },
+  { id: 8, title: "Patreon Is Hiring", company: "Patreon", location: "Remote", description: "Creator platform and payments", type: "full-time", fullDesc: "Empower creators worldwide. Work on payments, platform, and community tools." },
+  { id: 9, title: "Anthropic Is Hiring", company: "Anthropic", location: "San Francisco", description: "AI safety and research roles", type: "full-time", fullDesc: "Work on AI safety research. Build and align advanced AI systems responsibly." },
+  { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development opportunities", type: "full-time", fullDesc: "Lead engineering initiatives. Mentor teams and architect scalable systems." }
 ];
 
+const trans = {
+  en: { title: "Global Jobs Portal", subtitle: "Find remote jobs worldwide", searchBtn: "Search", results: "Found {count} jobs", datePublished: "Date Published", last24h: "Last 24 hours", last7d: "Last 7 days", last30d: "Last 30 days", jobType: "Job Type", fullTime: "Full-time", partTime: "Part-time", remote: "Remote", contract: "Contract", experience: "Experience", entry: "Entry Level", mid: "Mid Level", senior: "Senior", location: "Location Type", office: "Office", hybrid: "Hybrid", salary: "Salary", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Apply Now" },
+  ru: { title: "Глобальный портал вакансий", subtitle: "Найдите удаленную работу во всем мире", searchBtn: "Поиск", results: "Найдено {count} вакансий", datePublished: "Дата публикации", last24h: "Последние 24 часа", last7d: "Последние 7 дней", last30d: "Последние 30 дней", jobType: "Тип работы", fullTime: "Полный день", partTime: "Неполный день", remote: "Удаленно", contract: "Контракт", experience: "Опыт", entry: "Начальный уровень", mid: "Средний уровень", senior: "Старший", location: "Тип расположения", office: "Офис", hybrid: "Гибридный", salary: "Зарплата", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Подать заявку" },
+  tr: { title: "Küresel İş Portalı", subtitle: "Dünya çapında uzak işler bulun", searchBtn: "Ara", results: "{count} iş bulundu", datePublished: "Yayın Tarihi", last24h: "Son 24 saat", last7d: "Son 7 gün", last30d: "Son 30 gün", jobType: "İş Türü", fullTime: "Tam zamanlı", partTime: "Yarı zamanlı", remote: "Uzaktan", contract: "Sözleşme", experience: "Deneyim", entry: "Giriş Seviyesi", mid: "Orta Seviye", senior: "Kıdemli", location: "Konum Türü", office: "Ofis", hybrid: "Hibrit", salary: "Maaş", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Başvur" },
+  zh: { title: "全球工作门户", subtitle: "找到全球远程工作", searchBtn: "搜索", results: "找到 {count} 个职位", datePublished: "发布日期", last24h: "最后24小时", last7d: "最后7天", last30d: "最后30天", jobType: "工作类型", fullTime: "全职", partTime: "兼职", remote: "远程", contract: "合同", experience: "经验", entry: "入门级", mid: "中级", senior: "高级", location: "位置类型", office: "办公室", hybrid: "混合", salary: "薪资", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "立即申请" },
+  es: { title: "Portal Global de Empleos", subtitle: "Encuentra empleos remotos en todo el mundo", searchBtn: "Buscar", results: "Se encontraron {count} empleos", datePublished: "Fecha de Publicación", last24h: "Últimas 24 horas", last7d: "Últimos 7 días", last30d: "Últimos 30 días", jobType: "Tipo de Trabajo", fullTime: "Tiempo completo", partTime: "Tiempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiencia", entry: "Nivel Inicial", mid: "Nivel Intermedio", senior: "Senior", location: "Tipo de Ubicación", office: "Oficina", hybrid: "Híbrido", salary: "Salario", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Solicitar Ahora" },
+  fr: { title: "Portail Mondial d'Emploi", subtitle: "Trouver des emplois distants dans le monde", searchBtn: "Rechercher", results: "{count} emplois trouvés", datePublished: "Date de Publication", last24h: "Dernières 24 heures", last7d: "7 derniers jours", last30d: "30 derniers jours", jobType: "Type d'Emploi", fullTime: "Temps plein", partTime: "Temps partiel", remote: "Télétravail", contract: "Contrat", experience: "Expérience", entry: "Niveau Débutant", mid: "Niveau Intermédiaire", senior: "Senior", location: "Type de Localisation", office: "Bureau", hybrid: "Hybride", salary: "Salaire", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Postuler Maintenant" },
+  de: { title: "Globales Jobportal", subtitle: "Finden Sie Remote-Jobs weltweit", searchBtn: "Suche", results: "{count} Jobs gefunden", datePublished: "Veröffentlichungsdatum", last24h: "Letzte 24 Stunden", last7d: "Letzte 7 Tage", last30d: "Letzte 30 Tage", jobType: "Jobtyp", fullTime: "Vollzeitarbeit", partTime: "Teilzeitarbeit", remote: "Remote", contract: "Vertrag", experience: "Erfahrung", entry: "Anfängerniveau", mid: "Mittelniveau", senior: "Senior", location: "Standorttyp", office: "Büro", hybrid: "Hybrid", salary: "Gehalt", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Jetzt Bewerben" },
+  it: { title: "Portale Lavori Globale", subtitle: "Trova lavori remoti in tutto il mondo", searchBtn: "Cerca", results: "{count} lavori trovati", datePublished: "Data di Pubblicazione", last24h: "Ultime 24 ore", last7d: "Ultimi 7 giorni", last30d: "Ultimi 30 giorni", jobType: "Tipo di Lavoro", fullTime: "Tempo pieno", partTime: "Tempo parziale", remote: "Remoto", contract: "Contratto", experience: "Esperienza", entry: "Livello Principiante", mid: "Livello Intermedio", senior: "Senior", location: "Tipo di Localizzazione", office: "Ufficio", hybrid: "Ibrido", salary: "Stipendio", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Candidati Ora" },
+  pt: { title: "Portal Global de Empregos", subtitle: "Encontre empregos remotos em todo o mundo", searchBtn: "Pesquisar", results: "{count} empregos encontrados", datePublished: "Data de Publicação", last24h: "Últimas 24 horas", last7d: "Últimos 7 dias", last30d: "Últimos 30 dias", jobType: "Tipo de Emprego", fullTime: "Tempo integral", partTime: "Tempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiência", entry: "Nível Iniciante", mid: "Nível Intermediário", senior: "Senior", location: "Tipo de Localização", office: "Escritório", hybrid: "Híbrido", salary: "Salário", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Candidatar-se Agora" },
+  ja: { title: "グローバルジョブポータル", subtitle: "世界中のリモートジョブを検索", searchBtn: "検索", results: "{count} 件の職位が見つかりました", datePublished: "公開日", last24h: "過去24時間", last7d: "過去7日間", last30d: "過去30日間", jobType: "職種", fullTime: "フルタイム", partTime: "パートタイム", remote: "リモート", contract: "契約", experience: "経験", entry: "初級レベル", mid: "中級レベル", senior: "シニア", location: "勤務地タイプ", office: "オフィス", hybrid: "ハイブリッド", salary: "給与", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "今すぐ応募" },
+  ko: { title: "글로벌 채용 포털", subtitle: "전 세계 원격 직업 찾기", searchBtn: "검색", results: "{count}개의 채용공고를 찾았습니다", datePublished: "게시 날짜", last24h: "지난 24시간", last7d: "지난 7일", last30d: "지난 30일", jobType: "직무 유형", fullTime: "전일제", partTime: "시간제", remote: "원격 근무", contract: "계약", experience: "경험", entry: "초급", mid: "중급", senior: "시니어", location: "근무지 유형", office: "사무실", hybrid: "하이브리드", salary: "급여", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "지금 신청" },
+  ar: { title: "بوابة الوظائف العالمية", subtitle: "ابحث عن الوظائف البعيدة في جميع أنحاء العالم", searchBtn: "بحث", results: "تم العثور على {count} وظيفة", datePublished: "تاريخ النشر", last24h: "آخر 24 ساعة", last7d: "آخر 7 أيام", last30d: "آخر 30 يومًا", jobType: "نوع الوظيفة", fullTime: "بدوام كامل", partTime: "بدوام جزئي", remote: "عن بُعد", contract: "عقد", experience: "الخبرة", entry: "مستوى الدخول", mid: "المستوى الأوسط", senior: "أول", location: "نوع الموقع", office: "في المكتب", hybrid: "مختلط", salary: "الراتب", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "تقدم الآن" }
+};
+
 let currentLang = localStorage.getItem('jobLang') || 'en';
-let filteredJobs = jobs;
+let jobs = jobsData;
 
 function t(key) {
-  return translations[currentLang][key] || translations['en'][key];
+  return trans[currentLang] && trans[currentLang][key] ? trans[currentLang][key] : trans['en'][key];
 }
 
 function updateUI() {
@@ -581,43 +352,11 @@ function updateUI() {
   document.getElementById('searchBtn').textContent = t('searchBtn');
   document.getElementById('currentLang').textContent = currentLang.toUpperCase();
   
-  // Update filter labels
-  document.getElementById('dateFilter').innerHTML = `
-    <option value="">${t('datePublished')}</option>
-    <option value="1">${t('last24h')}</option>
-    <option value="7">${t('last7d')}</option>
-    <option value="30">${t('last30d')}</option>
-  `;
-  
-  document.getElementById('typeFilter').innerHTML = `
-    <option value="">${t('jobType')}</option>
-    <option value="fullTime">${t('fullTime')}</option>
-    <option value="partTime">${t('partTime')}</option>
-    <option value="remote">${t('remote')}</option>
-    <option value="contract">${t('contract')}</option>
-  `;
-  
-  document.getElementById('expFilter').innerHTML = `
-    <option value="">${t('experience')}</option>
-    <option value="entry">${t('entry')}</option>
-    <option value="mid">${t('mid')}</option>
-    <option value="senior">${t('senior')}</option>
-  `;
-  
-  document.getElementById('locationFilter').innerHTML = `
-    <option value="">${t('location')}</option>
-    <option value="remote">${t('remote')}</option>
-    <option value="office">${t('office')}</option>
-    <option value="hybrid">${t('hybrid')}</option>
-  `;
-  
-  document.getElementById('salaryFilter').innerHTML = `
-    <option value="">${t('salary')}</option>
-    <option value="030k">${t('salary030k')}</option>
-    <option value="3060k">${t('salary3060k')}</option>
-    <option value="60100k">${t('salary60100k')}</option>
-    <option value="100k">${t('salary100k')}</option>
-  `;
+  document.getElementById('dateFilter').innerHTML = `<option value="">${t('datePublished')}</option><option value="1">${t('last24h')}</option><option value="7">${t('last7d')}</option><option value="30">${t('last30d')}</option>`;
+  document.getElementById('typeFilter').innerHTML = `<option value="">${t('jobType')}</option><option value="full-time">${t('fullTime')}</option><option value="part-time">${t('partTime')}</option><option value="remote">${t('remote')}</option><option value="contract">${t('contract')}</option>`;
+  document.getElementById('expFilter').innerHTML = `<option value="">${t('experience')}</option><option value="entry">${t('entry')}</option><option value="mid">${t('mid')}</option><option value="senior">${t('senior')}</option>`;
+  document.getElementById('locationFilter').innerHTML = `<option value="">${t('location')}</option><option value="remote">${t('remote')}</option><option value="office">${t('office')}</option><option value="hybrid">${t('hybrid')}</option>`;
+  document.getElementById('salaryFilter').innerHTML = `<option value="">${t('salary')}</option><option value="030k">${t('salary030k')}</option><option value="3060k">${t('salary3060k')}</option><option value="60100k">${t('salary60100k')}</option><option value="100k">${t('salary100k')}</option>`;
   
   displayJobs(jobs);
 }
@@ -625,11 +364,8 @@ function updateUI() {
 function toggleLang() {
   const dropdown = document.getElementById('langDropdown');
   dropdown.classList.toggle('active');
-  
   if (dropdown.classList.contains('active')) {
-    dropdown.innerHTML = Object.keys(translations).map(lang => 
-      `<div class="lang-option ${lang === currentLang ? 'active' : ''}" onclick="changeLang('${lang}')">${lang.toUpperCase()}</div>`
-    ).join('');
+    dropdown.innerHTML = Object.keys(trans).map(lang => `<div class="lang-option ${lang === currentLang ? 'active' : ''}" onclick="changeLang('${lang}')">${lang.toUpperCase()}</div>`).join('');
   }
 }
 
@@ -642,42 +378,48 @@ function changeLang(lang) {
 
 function displayJobs(jobsToShow) {
   const container = document.getElementById('jobsContainer');
-  
   if (!jobsToShow || jobsToShow.length === 0) {
     container.innerHTML = '<div class="empty">No jobs found</div>';
     return;
   }
-  
-  container.innerHTML = jobsToShow.map(job => `
-    <div class="job-card">
-      <div class="job-title">${job.title}</div>
-      <div class="company-name">${job.company}</div>
-      <div class="job-meta">📍 ${job.location}</div>
-      <div class="job-desc">${job.description}</div>
-    </div>
-  `).join('');
-  
+  container.innerHTML = jobsToShow.map(job => `<div class="job-card" onclick="openJobModal(${job.id})"><div class="job-title">${job.title}</div><div class="company-name">${job.company}</div><div class="job-meta">📍 ${job.location}</div><div class="job-desc">${job.description}</div></div>`).join('');
   document.getElementById('resultCount').textContent = t('results').replace('{count}', jobsToShow.length);
+}
+
+function openJobModal(jobId) {
+  const job = jobs.find(j => j.id === jobId);
+  if (!job) return;
+  document.getElementById('jobDetails').innerHTML = `<div class="modal-title">${job.title}</div><div class="modal-company">${job.company}</div><div class="modal-meta"><div class="modal-meta-item">📍 ${job.location}</div><div class="modal-meta-item">💼 ${t('fullTime')}</div></div><div class="modal-description">${job.fullDesc}</div><button class="modal-btn" onclick="applyJob(${job.id})">${t('applyBtn')}</button>`;
+  document.getElementById('jobModal').classList.add('active');
+}
+
+function closeJobModal() {
+  document.getElementById('jobModal').classList.remove('active');
+}
+
+function applyJob(jobId) {
+  alert('Application submitted for job #' + jobId);
+  closeJobModal();
 }
 
 function searchJobs() {
   const jobSearch = document.getElementById('jobSearch').value.toLowerCase();
   const locationSearch = document.getElementById('locationSearch').value.toLowerCase();
-  
-  filteredJobs = jobs.filter(job => {
+  const filtered = jobs.filter(job => {
     const titleMatch = job.title.toLowerCase().includes(jobSearch) || job.company.toLowerCase().includes(jobSearch);
     const locationMatch = job.location.toLowerCase().includes(locationSearch);
     return titleMatch && (locationSearch === '' || locationMatch);
   });
-  
-  displayJobs(filteredJobs);
+  displayJobs(filtered);
 }
 
 function applyFilters() {
   searchJobs();
 }
 
-// Initialize
+document.getElementById('jobSearch').addEventListener('keypress', (e) => { if (e.key === 'Enter') searchJobs(); });
+document.getElementById('locationSearch').addEventListener('keypress', (e) => { if (e.key === 'Enter') searchJobs(); });
+
 updateUI();
 </script>
 
