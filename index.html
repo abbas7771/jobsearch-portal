@@ -3,262 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GlobalJobs - 12 Languages</title>
+  <title>GlobalJobs</title>
   <style>
-    :root { 
-      --primary: #4B4E6D; 
-      --accent: #84DCC6; 
-      --secondary: #95A3B3; 
-      --light-bg: #f9fafb; 
-    }
+    :root { --primary: #4B4E6D; --accent: #84DCC6; --secondary: #95A3B3; --light-bg: #f9fafb; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-      background: #fff; 
-      color: #333; 
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #333; }
     
-    .header { 
-      background: white; 
-      padding: 1.5rem 2rem; 
-      border-bottom: 1px solid #e8e8e8; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-    }
-    .logo { 
-      font-size: 1.5rem; 
-      font-weight: 900; 
-      color: var(--primary); 
-    }
+    .header { background: white; padding: 1.5rem 2rem; border-bottom: 1px solid #e8e8e8; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
     
     .lang-selector { position: relative; }
-    .lang-btn { 
-      background: white; 
-      border: 2px solid var(--accent); 
-      padding: 0.6rem 1.2rem; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      font-weight: 600; 
-      color: var(--primary);
-    }
+    .lang-btn { background: white; border: 2px solid var(--accent); padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--primary); }
     .lang-btn:hover { background: var(--light-bg); }
     
-    .lang-dropdown { 
-      position: absolute; 
-      background: white; 
-      border: 1px solid #ddd; 
-      border-radius: 8px; 
-      top: 100%; 
-      right: 0; 
-      z-index: 1000; 
-      display: none; 
-      min-width: 120px; 
-      margin-top: 0.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+    .lang-dropdown { position: absolute; background: white; border: 1px solid #ddd; border-radius: 8px; top: 100%; right: 0; z-index: 1000; display: none; min-width: 120px; margin-top: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .lang-dropdown.active { display: block; }
-    .lang-option { 
-      padding: 0.6rem 1rem; 
-      cursor: pointer; 
-      font-size: 13px;
-      transition: all 0.2s;
-    }
+    .lang-option { padding: 0.6rem 1rem; cursor: pointer; font-size: 13px; transition: all 0.2s; }
     .lang-option:hover { background: var(--light-bg); }
     .lang-option.active { background: var(--accent); color: var(--primary); font-weight: 600; }
     
     .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
     
     .hero { text-align: center; margin-bottom: 2rem; }
-    .hero h1 { 
-      font-size: 2.5rem; 
-      color: var(--primary); 
-      margin-bottom: 0.5rem;
-      font-weight: 800;
-    }
-    .hero p { 
-      font-size: 1.1rem; 
-      color: var(--secondary); 
-      margin-bottom: 1.5rem;
-    }
+    .hero h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 800; }
+    .hero p { font-size: 1.1rem; color: var(--secondary); margin-bottom: 1.5rem; }
     
-    .search-bar { 
-      display: flex; 
-      gap: 1rem; 
-      margin-bottom: 2rem; 
-      flex-wrap: wrap;
-    }
-    .search-bar input, .search-bar select { 
-      padding: 0.8rem 1rem; 
-      border: 1px solid #ddd; 
-      border-radius: 6px; 
-      font-size: 14px;
-      flex: 1;
-      min-width: 200px;
-    }
-    .search-bar button { 
-      padding: 0.8rem 2rem; 
-      background: var(--primary); 
-      color: white; 
-      border: none; 
-      border-radius: 6px; 
-      cursor: pointer; 
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .search-bar button:hover { 
-      background: var(--accent); 
-      color: var(--primary);
-    }
+    .search-bar { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .search-bar input, .search-bar select { padding: 0.8rem 1rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; flex: 1; min-width: 200px; }
+    .search-bar button { padding: 0.8rem 2rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+    .search-bar button:hover { background: var(--accent); color: var(--primary); }
     
-    .filters { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-      gap: 1rem; 
-      margin-bottom: 2rem;
-    }
-    .filters select { 
-      padding: 0.6rem; 
-      border: 1px solid #ddd; 
-      border-radius: 6px; 
-      font-size: 13px;
-    }
+    .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .filters select { padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
     
-    .results-info { 
-      margin-bottom: 1.5rem; 
-      color: var(--secondary); 
-      font-weight: 600;
-    }
+    .results-info { margin-bottom: 1.5rem; color: var(--secondary); font-weight: 600; }
     
-    .jobs-container { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-      gap: 1.5rem;
-    }
+    .jobs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
     
-    .job-card { 
-      background: white; 
-      border: 1px solid #e8e8e8; 
-      border-radius: 8px; 
-      padding: 1.5rem; 
-      cursor: pointer; 
-      transition: all 0.3s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-    .job-card:hover { 
-      border-color: var(--accent); 
-      box-shadow: 0 4px 12px rgba(132, 220, 198, 0.15);
-      transform: translateY(-2px);
-    }
+    .job-card { background: white; border: 1px solid #e8e8e8; border-radius: 8px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .job-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(132, 220, 198, 0.15); transform: translateY(-2px); }
     
-    .job-title { 
-      font-size: 1.1rem; 
-      font-weight: 700; 
-      color: var(--primary); 
-      margin-bottom: 0.5rem;
-    }
-    .company-name { 
-      font-size: 0.95rem; 
-      color: var(--secondary); 
-      font-weight: 600; 
-      margin-bottom: 0.8rem;
-    }
-    .job-meta { 
-      font-size: 0.9rem; 
-      color: #666; 
-      margin-bottom: 1rem;
-    }
-    .job-desc { 
-      font-size: 0.9rem; 
-      color: #555; 
-      line-height: 1.5;
-      max-height: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .job-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+    .company-name { font-size: 0.95rem; color: var(--secondary); font-weight: 600; margin-bottom: 0.8rem; }
+    .job-meta { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
+    .job-desc { font-size: 0.9rem; color: #555; line-height: 1.5; max-height: 100px; overflow: hidden; text-overflow: ellipsis; }
     
-    .empty { 
-      text-align: center; 
-      padding: 3rem; 
-      color: var(--secondary);
-    }
+    .empty { text-align: center; padding: 3rem; color: var(--secondary); }
 
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-      overflow-y: auto;
-    }
-    .modal.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: white;
-      max-width: 700px;
-      width: 90%;
-      border-radius: 8px;
-      padding: 2rem;
-      position: relative;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--secondary);
-    }
-    .modal-title {
-      font-size: 1.8rem;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-      font-weight: 800;
-    }
-    .modal-company {
-      font-size: 1.1rem;
-      color: var(--secondary);
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-    .modal-meta {
-      display: flex;
-      gap: 2rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .modal-meta-item {
-      color: #666;
-    }
-    .modal-description {
-      color: #555;
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-    }
-    .modal-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.8rem 2rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .modal-btn:hover {
-      background: var(--accent);
-      color: var(--primary);
-    }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; overflow-y: auto; align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; max-width: 700px; width: 90%; border-radius: 8px; padding: 2rem; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
+    .modal-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 800; }
+    .modal-company { font-size: 1.1rem; color: var(--secondary); margin-bottom: 1rem; font-weight: 600; }
+    .modal-meta { display: flex; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .modal-meta-item { color: #666; }
+    .modal-description { color: #555; line-height: 1.8; margin-bottom: 1.5rem; }
+    .modal-btn { background: var(--primary); color: white; border: none; padding: 0.8rem 2rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; width: 100%; }
+    .modal-btn:hover { background: var(--accent); color: var(--primary); }
+
+    .email-form { text-align: center; }
+    .email-form h2 { color: var(--primary); margin-bottom: 1rem; }
+    .email-form p { color: var(--secondary); margin-bottom: 1.5rem; }
+    .email-form input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-bottom: 1rem; }
   </style>
 </head>
 <body>
@@ -266,9 +73,7 @@
 <div class="header">
   <div class="logo">🌍 GlobalJobs</div>
   <div class="lang-selector">
-    <button class="lang-btn" onclick="toggleLang()">
-      <span id="currentLang">EN</span> ▼
-    </button>
+    <button class="lang-btn" onclick="toggleLang()"><span id="currentLang">EN</span> ▼</button>
     <div id="langDropdown" class="lang-dropdown"></div>
   </div>
 </div>
@@ -286,23 +91,18 @@
   </div>
   
   <div class="filters">
-    <select id="dateFilter" onchange="applyFilters()"></select>
-    <select id="typeFilter" onchange="applyFilters()"></select>
-    <select id="expFilter" onchange="applyFilters()"></select>
-    <select id="locationFilter" onchange="applyFilters()"></select>
-    <select id="salaryFilter" onchange="applyFilters()"></select>
+    <select id="dateFilter"></select>
+    <select id="typeFilter"></select>
+    <select id="expFilter"></select>
+    <select id="locationFilter"></select>
+    <select id="salaryFilter"></select>
   </div>
   
-  <div class="results-info">
-    <span id="resultCount">Loading jobs...</span>
-  </div>
-  
-  <div class="jobs-container" id="jobsContainer">
-    <div class="empty">Loading jobs...</div>
-  </div>
+  <div class="results-info"><span id="resultCount">Found 0 jobs</span></div>
+  <div class="jobs-container" id="jobsContainer"></div>
 </div>
 
-<!-- Job Detail Modal -->
+<!-- Job Modal -->
 <div id="jobModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeJobModal()">✕</button>
@@ -310,146 +110,76 @@
   </div>
 </div>
 
-<!-- Email Gate Modal -->
+<!-- Email Modal -->
 <div id="emailModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeEmailModal()">✕</button>
-    <div style="text-align:center;">
-      <h2 id="emailTitle" style="color:var(--primary); margin-bottom:1rem;">Subscribe to get access</h2>
-      <p id="emailSubtitle" style="color:var(--secondary); margin-bottom:1.5rem;">Get exclusive job opportunities and career tips</p>
-      <input type="email" id="emailInput" placeholder="your@email.com" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:6px; font-size:14px; margin-bottom:1rem;">
-      <button onclick="submitEmail()" id="submitEmailBtn" style="width:100%; padding:0.8rem; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
-        Subscribe & Continue
-      </button>
-      <p id="privacyNote" style="font-size:12px; color:#999; margin-top:1rem;">We respect your privacy. No spam.</p>
+    <div class="email-form">
+      <h2 id="emailTitle">Subscribe to get access</h2>
+      <p id="emailSubtitle">Get exclusive job opportunities</p>
+      <input type="email" id="emailInput" placeholder="your@email.com" />
+      <button class="modal-btn" onclick="submitEmail()" id="submitBtn">Subscribe & Continue</button>
+      <p style="font-size:12px; color:#999; margin-top:1rem;">We respect your privacy. No spam.</p>
     </div>
   </div>
 </div>
 
 <script>
-const jobsData = [
-  { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more roles available", type: "full-time", fullDesc: "Join 9 Mothers as they revolutionize robotics. Lead teams, drive innovation, and shape the future of automation." },
-  { id: 2, title: "HackerRank Is Hiring", company: "HackerRank (YC S11)", location: "New York", description: "Developer hiring platform roles", type: "full-time", fullDesc: "Help companies hire the best developers. Work on a platform trusted by 2500+ companies worldwide." },
-  { id: 3, title: "PostHog Is Hiring", company: "PostHog (YC W20)", location: "Remote", description: "Product analytics platform roles", type: "full-time", fullDesc: "Build product analytics tools that help engineers understand user behavior and ship better products." },
-  { id: 4, title: "Hightouch Is Hiring", company: "Hightouch (YC S19)", location: "Remote", description: "Data integration platform roles", type: "full-time", fullDesc: "Work on data infrastructure that powers insights for thousands of companies." },
-  { id: 5, title: "Mbodi AI Is Hiring", company: "Mbodi AI (YC P25)", location: "Remote", description: "Healthcare AI startup roles", type: "full-time", fullDesc: "Apply AI to healthcare. Build systems that save lives and improve patient outcomes." },
-  { id: 6, title: "Charge Robotics Hiring", company: "Charge Robotics (YC S21)", location: "Remote", description: "Software and hardware engineers", type: "full-time", fullDesc: "Design autonomous vehicle charging solutions. Hardware + software innovation." },
-  { id: 7, title: "Voiceflow Is Hiring", company: "Voiceflow", location: "Remote", description: "Conversational AI platform roles", type: "full-time", fullDesc: "Build the future of conversational AI. Help companies deploy voice and chat applications." },
-  { id: 8, title: "Patreon Is Hiring", company: "Patreon", location: "Remote", description: "Creator platform and payments", type: "full-time", fullDesc: "Empower creators worldwide. Work on payments, platform, and community tools." },
-  { id: 9, title: "Anthropic Is Hiring", company: "Anthropic", location: "San Francisco", description: "AI safety and research roles", type: "full-time", fullDesc: "Work on AI safety research. Build and align advanced AI systems responsibly." },
-  { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development opportunities", type: "full-time", fullDesc: "Lead engineering initiatives. Mentor teams and architect scalable systems." }
+const jobs = [
+  { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more", type: "full-time", fullDesc: "Join 9 Mothers revolutionizing robotics. Lead teams, drive innovation." },
+  { id: 2, title: "HackerRank Is Hiring", company: "HackerRank", location: "New York", description: "Developer hiring platform", type: "full-time", fullDesc: "Help companies hire the best developers. Work on trusted platform." },
+  { id: 3, title: "PostHog Is Hiring", company: "PostHog", location: "Remote", description: "Product analytics platform", type: "full-time", fullDesc: "Build analytics tools for engineers." },
+  { id: 4, title: "Hightouch Is Hiring", company: "Hightouch", location: "Remote", description: "Data integration platform", type: "full-time", fullDesc: "Work on data infrastructure." },
+  { id: 5, title: "Mbodi AI Is Hiring", company: "Mbodi AI", location: "Remote", description: "Healthcare AI startup", type: "full-time", fullDesc: "Apply AI to healthcare." },
+  { id: 6, title: "Charge Robotics Hiring", company: "Charge Robotics", location: "Remote", description: "Software and hardware engineers", type: "full-time", fullDesc: "Design autonomous vehicle charging." },
+  { id: 7, title: "Voiceflow Is Hiring", company: "Voiceflow", location: "Remote", description: "Conversational AI platform", type: "full-time", fullDesc: "Build conversational AI." },
+  { id: 8, title: "Patreon Is Hiring", company: "Patreon", location: "Remote", description: "Creator platform and payments", type: "full-time", fullDesc: "Empower creators worldwide." },
+  { id: 9, title: "Anthropic Is Hiring", company: "Anthropic", location: "San Francisco", description: "AI safety and research", type: "full-time", fullDesc: "Work on AI safety research." },
+  { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development", type: "full-time", fullDesc: "Lead engineering initiatives." }
 ];
 
 const trans = {
-  en: { title: "Global Jobs Portal", subtitle: "Find remote jobs worldwide", searchBtn: "Search", results: "Found {count} jobs", datePublished: "Date Published", last24h: "Last 24 hours", last7d: "Last 7 days", last30d: "Last 30 days", jobType: "Job Type", fullTime: "Full-time", partTime: "Part-time", remote: "Remote", contract: "Contract", experience: "Experience", entry: "Entry Level", mid: "Mid Level", senior: "Senior", location: "Location Type", office: "Office", hybrid: "Hybrid", salary: "Salary", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Apply Now" },
-  ru: { title: "Глобальный портал вакансий", subtitle: "Найдите удаленную работу во всем мире", searchBtn: "Поиск", results: "Найдено {count} вакансий", datePublished: "Дата публикации", last24h: "Последние 24 часа", last7d: "Последние 7 дней", last30d: "Последние 30 дней", jobType: "Тип работы", fullTime: "Полный день", partTime: "Неполный день", remote: "Удаленно", contract: "Контракт", experience: "Опыт", entry: "Начальный уровень", mid: "Средний уровень", senior: "Старший", location: "Тип расположения", office: "Офис", hybrid: "Гибридный", salary: "Зарплата", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Подать заявку" },
-  tr: { title: "Küresel İş Portalı", subtitle: "Dünya çapında uzak işler bulun", searchBtn: "Ara", results: "{count} iş bulundu", datePublished: "Yayın Tarihi", last24h: "Son 24 saat", last7d: "Son 7 gün", last30d: "Son 30 gün", jobType: "İş Türü", fullTime: "Tam zamanlı", partTime: "Yarı zamanlı", remote: "Uzaktan", contract: "Sözleşme", experience: "Deneyim", entry: "Giriş Seviyesi", mid: "Orta Seviye", senior: "Kıdemli", location: "Konum Türü", office: "Ofis", hybrid: "Hibrit", salary: "Maaş", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Başvur" },
-  zh: { title: "全球工作门户", subtitle: "找到全球远程工作", searchBtn: "搜索", results: "找到 {count} 个职位", datePublished: "发布日期", last24h: "最后24小时", last7d: "最后7天", last30d: "最后30天", jobType: "工作类型", fullTime: "全职", partTime: "兼职", remote: "远程", contract: "合同", experience: "经验", entry: "入门级", mid: "中级", senior: "高级", location: "位置类型", office: "办公室", hybrid: "混合", salary: "薪资", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "立即申请" },
-  es: { title: "Portal Global de Empleos", subtitle: "Encuentra empleos remotos en todo el mundo", searchBtn: "Buscar", results: "Se encontraron {count} empleos", datePublished: "Fecha de Publicación", last24h: "Últimas 24 horas", last7d: "Últimos 7 días", last30d: "Últimos 30 días", jobType: "Tipo de Trabajo", fullTime: "Tiempo completo", partTime: "Tiempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiencia", entry: "Nivel Inicial", mid: "Nivel Intermedio", senior: "Senior", location: "Tipo de Ubicación", office: "Oficina", hybrid: "Híbrido", salary: "Salario", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Solicitar Ahora" },
-  fr: { title: "Portail Mondial d'Emploi", subtitle: "Trouver des emplois distants dans le monde", searchBtn: "Rechercher", results: "{count} emplois trouvés", datePublished: "Date de Publication", last24h: "Dernières 24 heures", last7d: "7 derniers jours", last30d: "30 derniers jours", jobType: "Type d'Emploi", fullTime: "Temps plein", partTime: "Temps partiel", remote: "Télétravail", contract: "Contrat", experience: "Expérience", entry: "Niveau Débutant", mid: "Niveau Intermédiaire", senior: "Senior", location: "Type de Localisation", office: "Bureau", hybrid: "Hybride", salary: "Salaire", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Postuler Maintenant" },
-  de: { title: "Globales Jobportal", subtitle: "Finden Sie Remote-Jobs weltweit", searchBtn: "Suche", results: "{count} Jobs gefunden", datePublished: "Veröffentlichungsdatum", last24h: "Letzte 24 Stunden", last7d: "Letzte 7 Tage", last30d: "Letzte 30 Tage", jobType: "Jobtyp", fullTime: "Vollzeitarbeit", partTime: "Teilzeitarbeit", remote: "Remote", contract: "Vertrag", experience: "Erfahrung", entry: "Anfängerniveau", mid: "Mittelniveau", senior: "Senior", location: "Standorttyp", office: "Büro", hybrid: "Hybrid", salary: "Gehalt", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Jetzt Bewerben" },
-  it: { title: "Portale Lavori Globale", subtitle: "Trova lavori remoti in tutto il mondo", searchBtn: "Cerca", results: "{count} lavori trovati", datePublished: "Data di Pubblicazione", last24h: "Ultime 24 ore", last7d: "Ultimi 7 giorni", last30d: "Ultimi 30 giorni", jobType: "Tipo di Lavoro", fullTime: "Tempo pieno", partTime: "Tempo parziale", remote: "Remoto", contract: "Contratto", experience: "Esperienza", entry: "Livello Principiante", mid: "Livello Intermedio", senior: "Senior", location: "Tipo di Localizzazione", office: "Ufficio", hybrid: "Ibrido", salary: "Stipendio", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Candidati Ora" },
-  pt: { title: "Portal Global de Empregos", subtitle: "Encontre empregos remotos em todo o mundo", searchBtn: "Pesquisar", results: "{count} empregos encontrados", datePublished: "Data de Publicação", last24h: "Últimas 24 horas", last7d: "Últimos 7 dias", last30d: "Últimos 30 dias", jobType: "Tipo de Emprego", fullTime: "Tempo integral", partTime: "Tempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiência", entry: "Nível Iniciante", mid: "Nível Intermediário", senior: "Senior", location: "Tipo de Localização", office: "Escritório", hybrid: "Híbrido", salary: "Salário", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Candidatar-se Agora" },
-  ja: { title: "グローバルジョブポータル", subtitle: "世界中のリモートジョブを検索", searchBtn: "検索", results: "{count} 件の職位が見つかりました", datePublished: "公開日", last24h: "過去24時間", last7d: "過去7日間", last30d: "過去30日間", jobType: "職種", fullTime: "フルタイム", partTime: "パートタイム", remote: "リモート", contract: "契約", experience: "経験", entry: "初級レベル", mid: "中級レベル", senior: "シニア", location: "勤務地タイプ", office: "オフィス", hybrid: "ハイブリッド", salary: "給与", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "今すぐ応募" },
-  ko: { title: "글로벌 채용 포털", subtitle: "전 세계 원격 직업 찾기", searchBtn: "검색", results: "{count}개의 채용공고를 찾았습니다", datePublished: "게시 날짜", last24h: "지난 24시간", last7d: "지난 7일", last30d: "지난 30일", jobType: "직무 유형", fullTime: "전일제", partTime: "시간제", remote: "원격 근무", contract: "계약", experience: "경험", entry: "초급", mid: "중급", senior: "시니어", location: "근무지 유형", office: "사무실", hybrid: "하이브리드", salary: "급여", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "지금 신청" },
-  ar: { title: "بوابة الوظائف العالمية", subtitle: "ابحث عن الوظائف البعيدة في جميع أنحاء العالم", searchBtn: "بحث", results: "تم العثور على {count} وظيفة", datePublished: "تاريخ النشر", last24h: "آخر 24 ساعة", last7d: "آخر 7 أيام", last30d: "آخر 30 يومًا", jobType: "نوع الوظيفة", fullTime: "بدوام كامل", partTime: "بدوام جزئي", remote: "عن بُعد", contract: "عقد", experience: "الخبرة", entry: "مستوى الدخول", mid: "المستوى الأوسط", senior: "أول", location: "نوع الموقع", office: "في المكتب", hybrid: "مختلط", salary: "الراتب", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "تقدم الآن", emailTitle: "الاشتراك للوصول", emailSubtitle: "احصل على فرص عمل حصرية ونصائح مهنية", submit: "اشترك وتابع", submitting: "جاري الإرسال...", invalidEmail: "يرجى إدخال بريد إلكتروني صحيح" }
-};
-
-// Add to all languages
-trans.en.emailTitle = "Subscribe to get access";
-trans.en.emailSubtitle = "Get exclusive job opportunities and career tips";
-trans.en.submit = "Subscribe & Continue";
-trans.en.submitting = "Submitting...";
-trans.en.invalidEmail = "Please enter a valid email";
-
-trans.ru.emailTitle = "Подпишитесь для доступа";
-trans.ru.emailSubtitle = "Получайте эксклюзивные возможности трудоустройства и советы по карьере";
-trans.ru.submit = "Подписаться и продолжить";
-trans.ru.submitting = "Отправка...";
-trans.ru.invalidEmail = "Пожалуйста, введите действительный адрес электронной почты";
-
-trans.tr.emailTitle = "Erişim için abone olun";
-trans.tr.emailSubtitle = "Özel iş fırsatları ve kariyer ipuçları alın";
-trans.tr.submit = "Abone Ol ve Devam Et";
-trans.tr.submitting = "Gönderiliyor...";
-trans.tr.invalidEmail = "Lütfen geçerli bir e-posta adresi girin";
-
-trans.zh.emailTitle = "订阅以获取访问权限";
-trans.zh.emailSubtitle = "获得独家工作机会和职业建议";
-trans.zh.submit = "订阅并继续";
-trans.zh.submitting = "正在提交...";
-trans.zh.invalidEmail = "请输入有效的电子邮件地址";
-
-trans.es.emailTitle = "Suscribirse para obtener acceso";
-trans.es.emailSubtitle = "Obtenga oportunidades de trabajo exclusivas y consejos de carrera";
-trans.es.submit = "Suscribirse y continuar";
-trans.es.submitting = "Enviando...";
-trans.es.invalidEmail = "Por favor ingrese una dirección de correo electrónico válida";
-
-trans.fr.emailTitle = "S'abonner pour accéder";
-trans.fr.emailSubtitle = "Obtenez des opportunités d'emploi exclusives et des conseils de carrière";
-trans.fr.submit = "S'abonner et continuer";
-trans.fr.submitting = "Envoi...";
-trans.fr.invalidEmail = "Veuillez entrer une adresse e-mail valide";
-
-trans.de.emailTitle = "Abonnieren um Zugang zu erhalten";
-trans.de.emailSubtitle = "Erhalten Sie exklusive Jobmöglichkeiten und Karrieretipps";
-trans.de.submit = "Abonnieren und fortfahren";
-trans.de.submitting = "Wird eingereicht...";
-trans.de.invalidEmail = "Bitte geben Sie eine gültige E-Mail-Adresse ein";
-
-trans.it.emailTitle = "Iscriviti per accedere";
-trans.it.emailSubtitle = "Ottieni opportunità di lavoro esclusive e consigli di carriera";
-trans.it.submit = "Iscriviti e continua";
-trans.it.submitting = "Invio in corso...";
-trans.it.invalidEmail = "Inserisci un indirizzo email valido";
-
-trans.pt.emailTitle = "Inscreva-se para obter acesso";
-trans.pt.emailSubtitle = "Obtenha oportunidades de emprego exclusivas e dicas de carreira";
-trans.pt.submit = "Inscrever-se e continuar";
-trans.pt.submitting = "Enviando...";
-trans.pt.invalidEmail = "Por favor, insira um endereço de e-mail válido";
-
-trans.ja.emailTitle = "アクセスするために購読";
-trans.ja.emailSubtitle = "独占的な求人機会とキャリアのヒントを取得";
-trans.ja.submit = "購読して続行";
-trans.ja.submitting = "送信中...";
-trans.ja.invalidEmail = "有効なメールアドレスを入力してください";
-
-trans.ko.emailTitle = "액세스하려면 구독하세요";
-trans.ko.emailSubtitle = "독점 채용 기회 및 경력 팁을 받으세요";
-trans.ko.submit = "구독 및 계속";
-trans.ko.submitting = "제출 중...";
-trans.ko.invalidEmail = "유효한 이메일 주소를 입력하세요"
+  en: { title: "Global Jobs Portal", subtitle: "Find remote jobs worldwide", searchBtn: "Search", results: "Found {count} jobs", datePublished: "Date", jobType: "Job Type", fullTime: "Full-time", partTime: "Part-time", remote: "Remote", contract: "Contract", experience: "Experience", entry: "Entry Level", mid: "Mid Level", senior: "Senior", location: "Location", office: "Office", hybrid: "Hybrid", salary: "Salary", applyBtn: "Apply Now", emailTitle: "Subscribe to get access", emailSubtitle: "Get exclusive job opportunities", submitBtn: "Subscribe & Continue" },
+  ru: { title: "Глобальный портал вакансий", subtitle: "Найдите удаленную работу", searchBtn: "Поиск", results: "Найдено {count} вакансий", datePublished: "Дата", jobType: "Тип работы", fullTime: "Полный день", partTime: "Неполный день", remote: "Удаленно", contract: "Контракт", experience: "Опыт", entry: "Начальный уровень", mid: "Средний уровень", senior: "Старший", location: "Локация", office: "Офис", hybrid: "Гибридный", salary: "Зарплата", applyBtn: "Подать заявку", emailTitle: "Подпишитесь для доступа", emailSubtitle: "Получайте эксклюзивные вакансии", submitBtn: "Подписаться и продолжить" },
+  tr: { title: "Küresel İş Portalı", subtitle: "Dünya çapında uzak işler", searchBtn: "Ara", results: "{count} iş bulundu", datePublished: "Tarih", jobType: "İş Türü", fullTime: "Tam zamanlı", partTime: "Yarı zamanlı", remote: "Uzaktan", contract: "Sözleşme", experience: "Deneyim", entry: "Giriş Seviyesi", mid: "Orta Seviye", senior: "Kıdemli", location: "Konum", office: "Ofis", hybrid: "Hibrit", salary: "Maaş", applyBtn: "Başvur", emailTitle: "Erişim için abone olun", emailSubtitle: "Özel iş fırsatları alın", submitBtn: "Abone Ol ve Devam Et" },
+  zh: { title: "全球工作门户", subtitle: "找到全球远程工作", searchBtn: "搜索", results: "找到 {count} 个职位", datePublished: "日期", jobType: "工作类型", fullTime: "全职", partTime: "兼职", remote: "远程", contract: "合同", experience: "经验", entry: "入门级", mid: "中级", senior: "高级", location: "位置", office: "办公室", hybrid: "混合", salary: "薪资", applyBtn: "立即申请", emailTitle: "订阅以获取访问权限", emailSubtitle: "获得独家工作机会", submitBtn: "订阅并继续" },
+  es: { title: "Portal Global de Empleos", subtitle: "Encuentra empleos remotos", searchBtn: "Buscar", results: "Se encontraron {count} empleos", datePublished: "Fecha", jobType: "Tipo de Trabajo", fullTime: "Tiempo completo", partTime: "Tiempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiencia", entry: "Nivel Inicial", mid: "Nivel Intermedio", senior: "Senior", location: "Ubicación", office: "Oficina", hybrid: "Híbrido", salary: "Salario", applyBtn: "Solicitar Ahora", emailTitle: "Suscribirse para acceder", emailSubtitle: "Obtenga oportunidades exclusivas", submitBtn: "Suscribirse y continuar" },
+  fr: { title: "Portail Mondial d'Emploi", subtitle: "Trouvez des emplois distants", searchBtn: "Rechercher", results: "{count} emplois trouvés", datePublished: "Date", jobType: "Type d'Emploi", fullTime: "Temps plein", partTime: "Temps partiel", remote: "Télétravail", contract: "Contrat", experience: "Expérience", entry: "Niveau Débutant", mid: "Niveau Intermédiaire", senior: "Senior", location: "Localisation", office: "Bureau", hybrid: "Hybride", salary: "Salaire", applyBtn: "Postuler Maintenant", emailTitle: "S'abonner pour accéder", emailSubtitle: "Obtenir des opportunités exclusives", submitBtn: "S'abonner et continuer" },
+  de: { title: "Globales Jobportal", subtitle: "Finden Sie Remote-Jobs", searchBtn: "Suche", results: "{count} Jobs gefunden", datePublished: "Datum", jobType: "Jobtyp", fullTime: "Vollzeitarbeit", partTime: "Teilzeitarbeit", remote: "Remote", contract: "Vertrag", experience: "Erfahrung", entry: "Anfängerniveau", mid: "Mittelniveau", senior: "Senior", location: "Standort", office: "Büro", hybrid: "Hybrid", salary: "Gehalt", applyBtn: "Jetzt Bewerben", emailTitle: "Abonnieren zum Zugreifen", emailSubtitle: "Erhalten Sie exklusive Angebote", submitBtn: "Abonnieren und fortfahren" },
+  it: { title: "Portale Lavori Globale", subtitle: "Trova lavori remoti", searchBtn: "Cerca", results: "{count} lavori trovati", datePublished: "Data", jobType: "Tipo di Lavoro", fullTime: "Tempo pieno", partTime: "Tempo parziale", remote: "Remoto", contract: "Contratto", experience: "Esperienza", entry: "Livello Principiante", mid: "Livello Intermedio", senior: "Senior", location: "Localizzazione", office: "Ufficio", hybrid: "Ibrido", salary: "Stipendio", applyBtn: "Candidati Ora", emailTitle: "Iscriviti per accedere", emailSubtitle: "Ottieni opportunità esclusive", submitBtn: "Iscriviti e continua" },
+  pt: { title: "Portal Global de Empregos", subtitle: "Encontre empregos remotos", searchBtn: "Pesquisar", results: "{count} empregos encontrados", datePublished: "Data", jobType: "Tipo de Emprego", fullTime: "Tempo integral", partTime: "Tempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiência", entry: "Nível Iniciante", mid: "Nível Intermediário", senior: "Senior", location: "Localização", office: "Escritório", hybrid: "Híbrido", salary: "Salário", applyBtn: "Candidatar-se Agora", emailTitle: "Inscrever-se para acessar", emailSubtitle: "Obter oportunidades exclusivas", submitBtn: "Inscrever-se e continuar" },
+  ja: { title: "グローバルジョブポータル", subtitle: "世界中のリモートジョブ", searchBtn: "検索", results: "{count} 件の職位", datePublished: "日付", jobType: "職種", fullTime: "フルタイム", partTime: "パートタイム", remote: "リモート", contract: "契約", experience: "経験", entry: "初級レベル", mid: "中級レベル", senior: "シニア", location: "勤務地", office: "オフィス", hybrid: "ハイブリッド", salary: "給与", applyBtn: "今すぐ応募", emailTitle: "アクセスするには購読", emailSubtitle: "独占的な機会を取得", submitBtn: "購読して続行" },
+  ko: { title: "글로벌 채용 포털", subtitle: "전 세계 원격 직업", searchBtn: "검색", results: "{count}개의 채용공고", datePublished: "날짜", jobType: "직무 유형", fullTime: "전일제", partTime: "시간제", remote: "원격 근무", contract: "계약", experience: "경험", entry: "초급", mid: "중급", senior: "시니어", location: "위치", office: "사무실", hybrid: "하이브리드", salary: "급여", applyBtn: "지금 신청", emailTitle: "액세스하려면 구독", emailSubtitle: "독점 기회 얻기", submitBtn: "구독 및 계속" },
+  ar: { title: "بوابة الوظائف العالمية", subtitle: "ابحث عن الوظائف البعيدة", searchBtn: "بحث", results: "تم العثور على {count} وظيفة", datePublished: "التاريخ", jobType: "نوع الوظيفة", fullTime: "بدوام كامل", partTime: "بدوام جزئي", remote: "عن بُعد", contract: "عقد", experience: "الخبرة", entry: "مستوى الدخول", mid: "المستوى الأوسط", senior: "أول", location: "الموقع", office: "في المكتب", hybrid: "مختلط", salary: "الراتب", applyBtn: "تقدم الآن", emailTitle: "اشترك للوصول", emailSubtitle: "احصل على فرص حصرية", submitBtn: "اشترك ومتابعة" }
 };
 
 let currentLang = localStorage.getItem('jobLang') || 'en';
-let jobs = jobsData;
 
-function t(key) {
-  return trans[currentLang] && trans[currentLang][key] ? trans[currentLang][key] : trans['en'][key];
-}
+function t(key) { return trans[currentLang]?.[key] || trans.en[key] || key; }
 
 function updateUI() {
   document.getElementById('title').textContent = t('title');
   document.getElementById('subtitle').textContent = t('subtitle');
   document.getElementById('searchBtn').textContent = t('searchBtn');
+  document.getElementById('emailTitle').textContent = t('emailTitle');
+  document.getElementById('emailSubtitle').textContent = t('emailSubtitle');
+  document.getElementById('submitBtn').textContent = t('submitBtn');
   document.getElementById('currentLang').textContent = currentLang.toUpperCase();
   
-  document.getElementById('dateFilter').innerHTML = `<option value="">${t('datePublished')}</option><option value="1">${t('last24h')}</option><option value="7">${t('last7d')}</option><option value="30">${t('last30d')}</option>`;
-  document.getElementById('typeFilter').innerHTML = `<option value="">${t('jobType')}</option><option value="full-time">${t('fullTime')}</option><option value="part-time">${t('partTime')}</option><option value="remote">${t('remote')}</option><option value="contract">${t('contract')}</option>`;
-  document.getElementById('expFilter').innerHTML = `<option value="">${t('experience')}</option><option value="entry">${t('entry')}</option><option value="mid">${t('mid')}</option><option value="senior">${t('senior')}</option>`;
-  document.getElementById('locationFilter').innerHTML = `<option value="">${t('location')}</option><option value="remote">${t('remote')}</option><option value="office">${t('office')}</option><option value="hybrid">${t('hybrid')}</option>`;
-  document.getElementById('salaryFilter').innerHTML = `<option value="">${t('salary')}</option><option value="030k">${t('salary030k')}</option><option value="3060k">${t('salary3060k')}</option><option value="60100k">${t('salary60100k')}</option><option value="100k">${t('salary100k')}</option>`;
+  document.getElementById('dateFilter').innerHTML = `<option value="">${t('datePublished')}</option>`;
+  document.getElementById('typeFilter').innerHTML = `<option value="">${t('jobType')}</option><option value="full-time">${t('fullTime')}</option>`;
+  document.getElementById('expFilter').innerHTML = `<option value="">${t('experience')}</option><option value="entry">${t('entry')}</option>`;
+  document.getElementById('locationFilter').innerHTML = `<option value="">${t('location')}</option><option value="remote">${t('remote')}</option>`;
+  document.getElementById('salaryFilter').innerHTML = `<option value="">${t('salary')}</option>`;
   
   displayJobs(jobs);
 }
 
 function toggleLang() {
-  const dropdown = document.getElementById('langDropdown');
-  dropdown.classList.toggle('active');
-  if (dropdown.classList.contains('active')) {
-    dropdown.innerHTML = Object.keys(trans).map(lang => `<div class="lang-option ${lang === currentLang ? 'active' : ''}" onclick="changeLang('${lang}')">${lang.toUpperCase()}</div>`).join('');
+  const dd = document.getElementById('langDropdown');
+  dd.classList.toggle('active');
+  if (dd.classList.contains('active')) {
+    dd.innerHTML = Object.keys(trans).map(lang => `<div class="lang-option ${lang === currentLang ? 'active' : ''}" onclick="changeLang('${lang}')">${lang.toUpperCase()}</div>`).join('');
   }
 }
 
@@ -462,10 +192,6 @@ function changeLang(lang) {
 
 function displayJobs(jobsToShow) {
   const container = document.getElementById('jobsContainer');
-  if (!jobsToShow || jobsToShow.length === 0) {
-    container.innerHTML = '<div class="empty">No jobs found</div>';
-    return;
-  }
   container.innerHTML = jobsToShow.map(job => `<div class="job-card" onclick="openJobModal(${job.id})"><div class="job-title">${job.title}</div><div class="company-name">${job.company}</div><div class="job-meta">📍 ${job.location}</div><div class="job-desc">${job.description}</div></div>`).join('');
   document.getElementById('resultCount').textContent = t('results').replace('{count}', jobsToShow.length);
 }
@@ -477,69 +203,35 @@ function openJobModal(jobId) {
   document.getElementById('jobModal').classList.add('active');
 }
 
-function closeJobModal() {
-  document.getElementById('jobModal').classList.remove('active');
-}
+function closeJobModal() { document.getElementById('jobModal').classList.remove('active'); }
 
 function applyJob(jobId) {
-  const job = jobs.find(j => j.id === jobId);
-  window.currentJobId = jobId;
-  window.currentJobUrl = job.url || 'https://jobsearch.ink'; // Fallback URL
-  
-  // Show email gate modal
+  window.jobId = jobId;
   document.getElementById('emailModal').classList.add('active');
   closeJobModal();
 }
 
-function closeEmailModal() {
-  document.getElementById('emailModal').classList.remove('active');
-}
+function closeEmailModal() { document.getElementById('emailModal').classList.remove('active'); }
 
 function submitEmail() {
   const email = document.getElementById('emailInput').value;
-  if (!email || !email.includes('@')) {
-    alert(t('invalidEmail') || 'Please enter a valid email');
-    return;
-  }
+  if (!email.includes('@')) { alert('Invalid email'); return; }
   
-  // Save to KuponHub database via Google Forms
-  const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf_K0JlZxG4r0Z3Y0O0_K0K0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0/formResponse';
-  const formData = new FormData();
-  formData.append('entry.123456', email); // Replace with actual Google Form field ID
+  // Save email (here you would call your API)
+  console.log('Email saved:', email);
   
-  fetch(formUrl, {
-    method: 'POST',
-    body: formData,
-    mode: 'no-cors'
-  }).then(() => {
-    // After email saved, redirect to job
-    setTimeout(() => {
-      window.location.href = window.currentJobUrl;
-    }, 1000);
-  }).catch(() => {
-    // Redirect even if save fails
-    setTimeout(() => {
-      window.location.href = window.currentJobUrl;
-    }, 1000);
-  });
-  
-  document.getElementById('submitEmailBtn').disabled = true;
-  document.getElementById('submitEmailBtn').textContent = t('submitting') || 'Submitting...';
+  // Redirect
+  setTimeout(() => {
+    window.location.href = 'https://jobsearch.ink';
+    document.getElementById('emailInput').value = '';
+  }, 500);
 }
 
 function searchJobs() {
-  const jobSearch = document.getElementById('jobSearch').value.toLowerCase();
-  const locationSearch = document.getElementById('locationSearch').value.toLowerCase();
-  const filtered = jobs.filter(job => {
-    const titleMatch = job.title.toLowerCase().includes(jobSearch) || job.company.toLowerCase().includes(jobSearch);
-    const locationMatch = job.location.toLowerCase().includes(locationSearch);
-    return titleMatch && (locationSearch === '' || locationMatch);
-  });
+  const search = document.getElementById('jobSearch').value.toLowerCase();
+  const loc = document.getElementById('locationSearch').value.toLowerCase();
+  const filtered = jobs.filter(j => (j.title.toLowerCase().includes(search) || j.company.toLowerCase().includes(search)) && (loc === '' || j.location.toLowerCase().includes(loc)));
   displayJobs(filtered);
-}
-
-function applyFilters() {
-  searchJobs();
 }
 
 document.getElementById('jobSearch').addEventListener('keypress', (e) => { if (e.key === 'Enter') searchJobs(); });
