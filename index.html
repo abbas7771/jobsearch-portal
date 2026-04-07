@@ -3,267 +3,429 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Global job board with 500K+ job listings. Find jobs worldwide with advanced search and filters.">
-  <meta name="keywords" content="jobs, careers, employment, job search, hiring">
-  <title>Global Jobs - Find Your Next Opportunity</title>
+  <title>GlobalJobs - 12 Languages</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root { --primary: #0066cc; --light-bg: #f5f7fa; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; font-size: 14px; }
     
-    .header { background: white; padding: 1rem 0; border-bottom: 1px solid #e8e8e8; }
-    .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
+    .header { background: white; padding: 1rem 0; border-bottom: 1px solid #e8e8e8; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-left: 2rem; }
     
-    .hero { padding: 2rem 0; background: var(--light-bg); }
+    .lang-selector { margin-right: 2rem; }
+    .lang-btn { background: white; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .lang-btn:hover { background: var(--light-bg); }
+    .lang-dropdown { position: absolute; background: white; border: 1px solid #ddd; border-radius: 6px; top: 100%; right: 0; z-index: 1000; display: none; min-width: 150px; }
+    .lang-option { padding: 0.5rem 1rem; cursor: pointer; font-size: 13px; }
+    .lang-option:hover { background: var(--light-bg); }
+    .lang-option.active { background: var(--primary); color: white; }
     
-    /* New dual search layout */
+    .hero { padding: 2rem; background: var(--light-bg); }
     .search-container { display: grid; grid-template-columns: 1fr 1.5fr auto; gap: 1rem; margin: 1.5rem 0; align-items: center; }
     .search-input { font-size: 14px; padding: 0.75rem 1rem; border: 1px solid #ddd; border-radius: 6px; width: 100%; }
     .search-input.location { border: 2px solid var(--primary); }
-    .search-btn { background: var(--primary); color: white; border: none; padding: 0.75rem 2.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; white-space: nowrap; }
-    .search-btn:hover { background: #0052a3; }
+    .search-btn { background: var(--primary); color: white; border: none; padding: 0.75rem 2.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; }
     
     .filters { display: flex; gap: 0.5rem; margin: 1.5rem 0; flex-wrap: wrap; }
     .filter-btn { background: transparent; border: 1px solid #ddd; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 13px; color: #333; }
     .filter-btn:hover { background: var(--light-bg); }
     
     .jobs-container { margin-top: 2rem; }
-    .job-card { background: white; border: 1px solid #e8e8e8; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; transition: 0.2s; }
+    .job-card { background: white; border: 1px solid #e8e8e8; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
     .job-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .job-title { font-size: 15px; font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
     .company-name { font-size: 14px; font-weight: 600; color: #111; margin: 0.5rem 0; }
-    .job-meta { font-size: 13px; color: #666; display: flex; gap: 1.5rem; margin: 0.5rem 0; flex-wrap: wrap; }
-    .job-desc { font-size: 13px; color: #666; margin: 0.75rem 0; line-height: 1.4; }
-    .job-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 13px; color: #999; }
-    .save-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 18px; }
-    .save-btn.saved { color: #ff0000; }
-    
-    .ads-space { background: var(--light-bg); padding: 2rem; border-radius: 8px; text-align: center; color: #999; font-size: 13px; margin-bottom: 2rem; }
-    .results-info { font-size: 13px; color: #666; margin: 1rem 0; }
-    .pagination { justify-content: center; margin: 2rem 0; }
-    .pagination .page-link { color: var(--primary); border: 1px solid #ddd; font-size: 13px; }
-    .pagination .page-item.active .page-link { background: var(--primary); }
+    .job-meta { font-size: 13px; color: #666; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .job-desc { font-size: 13px; color: #666; margin: 0.75rem 0; }
     
     @media (max-width: 768px) {
       .search-container { grid-template-columns: 1fr; }
-      .filters { flex-direction: column; }
+      .header { flex-direction: column; }
+      .logo { margin: 1rem 0; }
+      .lang-selector { margin-right: 1rem; }
     }
   </style>
 </head>
 <body>
 
 <nav class="header">
-  <div class="container-fluid px-3 px-md-5">
-    <div class="logo">🌍 GlobalJobs</div>
-    <p style="font-size: 12px; color: #999; margin-top: 0.3rem;">Find jobs worldwide</p>
+  <div class="logo">🌍 GlobalJobs</div>
+  <div class="lang-selector" style="position: relative;">
+    <button class="lang-btn" onclick="toggleLangDropdown()">🌐 <span id="currentLang">EN</span></button>
+    <div class="lang-dropdown" id="langDropdown">
+      <div class="lang-option active" onclick="setLanguage('en')">🇬🇧 English</div>
+      <div class="lang-option" onclick="setLanguage('ru')">🇷🇺 Русский</div>
+      <div class="lang-option" onclick="setLanguage('tr')">🇹🇷 Türkçe</div>
+      <div class="lang-option" onclick="setLanguage('zh')">🇨🇳 中文</div>
+      <div class="lang-option" onclick="setLanguage('es')">🇪🇸 Español</div>
+      <div class="lang-option" onclick="setLanguage('fr')">🇫🇷 Français</div>
+      <div class="lang-option" onclick="setLanguage('de')">🇩🇪 Deutsch</div>
+      <div class="lang-option" onclick="setLanguage('it')">🇮🇹 Italiano</div>
+      <div class="lang-option" onclick="setLanguage('pt')">🇵🇹 Português</div>
+      <div class="lang-option" onclick="setLanguage('ja')">🇯🇵 日本語</div>
+      <div class="lang-option" onclick="setLanguage('ko')">🇰🇷 한국어</div>
+      <div class="lang-option" onclick="setLanguage('ar')">🇸🇦 العربية</div>
+    </div>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container-fluid px-3 px-md-5">
-    <h1 style="font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem;">Find Your Next Job</h1>
-    <p style="font-size: 14px; color: #666; margin-bottom: 1rem;">Search from 500K+ job listings worldwide</p>
+    <h1 id="title" style="font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem;">Find Your Next Job</h1>
+    <p id="subtitle" style="font-size: 14px; color: #666; margin-bottom: 1rem;">Search from 500K+ job listings worldwide</p>
     
-    <!-- Dual Search Inputs -->
     <div class="search-container">
-      <input type="text" id="searchInput" class="search-input" placeholder="Я ищу вакансии...">
-      <input type="text" id="locationInput" class="search-input location" placeholder="В регионе...">
-      <button onclick="searchJobs()" class="search-btn">Найти</button>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search jobs...">
+      <input type="text" id="locationInput" class="search-input location" placeholder="Location...">
+      <button onclick="searchJobs()" class="search-btn" id="searchBtn">Find</button>
     </div>
     
-    <!-- Filters -->
     <div class="filters">
       <select class="filter-btn" id="dateFilter" onchange="applyFilters()">
-        <option value="">Дата публикации</option>
-        <option value="1">Последние 24 часа</option>
-        <option value="7">Последние 7 дней</option>
-        <option value="30">Последние 30 дней</option>
+        <option value="">Date Published</option>
+        <option value="1">Last 24 hours</option>
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
       </select>
       <select class="filter-btn" id="typeFilter" onchange="applyFilters()">
-        <option value="">Тип занятости</option>
-        <option value="full-time">Полная занятость</option>
-        <option value="part-time">Неполная занятость</option>
-        <option value="remote">Удаленная работа</option>
-        <option value="contract">Контракт</option>
+        <option value="">Job Type</option>
+        <option value="full-time">Full-time</option>
+        <option value="part-time">Part-time</option>
+        <option value="remote">Remote</option>
+        <option value="contract">Contract</option>
       </select>
       <select class="filter-btn" id="experienceFilter" onchange="applyFilters()">
-        <option value="">Опыт работы</option>
-        <option value="entry">Начинающий</option>
-        <option value="mid">Средний</option>
-        <option value="senior">Старший</option>
-      </select>
-      <select class="filter-btn" id="placementFilter" onchange="applyFilters()">
-        <option value="">Размещение</option>
-        <option value="remote">Удаленно</option>
-        <option value="office">В офисе</option>
-        <option value="hybrid">Гибридно</option>
-      </select>
-      <select class="filter-btn" id="salaryFilter" onchange="applyFilters()">
-        <option value="">Зарплата</option>
-        <option value="0-30k">$0-30K</option>
-        <option value="30-60k">$30-60K</option>
-        <option value="60-100k">$60-100K</option>
-        <option value="100k+">$100K+</option>
+        <option value="">Experience</option>
+        <option value="entry">Entry level</option>
+        <option value="mid">Mid-level</option>
+        <option value="senior">Senior</option>
       </select>
     </div>
   </div>
 </section>
 
 <div class="container-fluid px-3 px-md-5" style="margin-top: 2rem;">
-  <div class="row">
-    <div class="col-md-8">
-      <div class="results-info">
-        <span id="resultCount">Loading jobs...</span>
-      </div>
-      <div class="jobs-container" id="jobsContainer"></div>
-      
-      <nav aria-label="Page navigation">
-        <ul class="pagination" id="pagination"></ul>
-      </nav>
-    </div>
-    
-    <div class="col-md-4">
-      <div class="ads-space">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxx"
-             crossorigin="anonymous"></script>
-        📢 Google AdSense
-      </div>
-    </div>
-  </div>
+  <div id="resultCount" class="results-info">Loading jobs...</div>
+  <div class="jobs-container" id="jobsContainer"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const sampleJobs = [
-  {
-    id: 1,
-    title: "Senior Software Engineer",
-    company: "Tech Company",
-    location: "Remote",
-    type: "Full-time",
-    datePosted: "2 days ago",
-    description: "We're looking for an experienced software engineer to join our growing team. Must have 5+ years experience with JavaScript.",
-    salary: "$120K - $150K",
-    experience: "senior"
+const translations = {
+  en: {
+    title: "Find Your Next Job",
+    subtitle: "Search from 500K+ job listings worldwide",
+    searchPlaceholder: "Search jobs...",
+    locationPlaceholder: "Location...",
+    searchBtn: "Find",
+    datePublished: "Date Published",
+    last24h: "Last 24 hours",
+    last7d: "Last 7 days",
+    last30d: "Last 30 days",
+    jobType: "Job Type",
+    fullTime: "Full-time",
+    partTime: "Part-time",
+    remote: "Remote",
+    contract: "Contract",
+    experience: "Experience",
+    entryLevel: "Entry level",
+    midLevel: "Mid-level",
+    senior: "Senior",
+    results: "Results: {count} jobs found"
   },
-  {
-    id: 2,
-    title: "Product Manager",
-    company: "StartUp Inc",
-    location: "San Francisco, CA",
-    type: "Full-time",
-    datePosted: "1 day ago",
-    description: "Lead product strategy for our platform. Experience with SaaS products required.",
-    salary: "$100K - $130K",
-    experience: "mid"
+  ru: {
+    title: "Найдите свою следующую работу",
+    subtitle: "Поиск среди 500K+ вакансий по всему миру",
+    searchPlaceholder: "Поиск вакансий...",
+    locationPlaceholder: "Местоположение...",
+    searchBtn: "Найти",
+    datePublished: "Дата публикации",
+    last24h: "За последние 24 часа",
+    last7d: "За последние 7 дней",
+    last30d: "За последние 30 дней",
+    jobType: "Тип работы",
+    fullTime: "Полный рабочий день",
+    partTime: "Неполный рабочий день",
+    remote: "Удаленная",
+    contract: "Контракт",
+    experience: "Опыт работы",
+    entryLevel: "Начинающий",
+    midLevel: "Средний уровень",
+    senior: "Старший",
+    results: "Результаты: {count} вакансий найдено"
   },
-  {
-    id: 3,
-    title: "Data Analyst",
-    company: "Finance Corp",
-    location: "New York, NY",
-    type: "Full-time",
-    datePosted: "3 days ago",
-    description: "Analyze financial data and create insights. SQL and Python experience needed.",
-    salary: "$80K - $100K",
-    experience: "entry"
+  tr: {
+    title: "Sonraki İşinizi Bulun",
+    subtitle: "Dünya çapında 500K+ iş ilanı arasında arama yapın",
+    searchPlaceholder: "İş ara...",
+    locationPlaceholder: "Konum...",
+    searchBtn: "Bul",
+    datePublished: "Yayın Tarihi",
+    last24h: "Son 24 saat",
+    last7d: "Son 7 gün",
+    last30d: "Son 30 gün",
+    jobType: "İş Türü",
+    fullTime: "Tam Zamanlı",
+    partTime: "Yarı Zamanlı",
+    remote: "Uzaktan",
+    contract: "Sözleşme",
+    experience: "Deneyim",
+    entryLevel: "Giriş Seviyesi",
+    midLevel: "Orta Seviye",
+    senior: "Kıdemli",
+    results: "Sonuçlar: {count} iş bulundu"
+  },
+  zh: {
+    title: "寻找你的下一份工作",
+    subtitle: "在全球500K+个职位中搜索",
+    searchPlaceholder: "搜索工作...",
+    locationPlaceholder: "位置...",
+    searchBtn: "查找",
+    datePublished: "发布日期",
+    last24h: "过去24小时",
+    last7d: "过去7天",
+    last30d: "过去30天",
+    jobType: "工作类型",
+    fullTime: "全职",
+    partTime: "兼职",
+    remote: "远程",
+    contract: "合同",
+    experience: "经验",
+    entryLevel: "入门级",
+    midLevel: "中级",
+    senior: "高级",
+    results: "结果：找到{count}个职位"
+  },
+  es: {
+    title: "Encuentra tu próximo trabajo",
+    subtitle: "Busca entre 500K+ empleos en todo el mundo",
+    searchPlaceholder: "Buscar empleos...",
+    locationPlaceholder: "Ubicación...",
+    searchBtn: "Buscar",
+    datePublished: "Fecha de publicación",
+    last24h: "Últimas 24 horas",
+    last7d: "Últimos 7 días",
+    last30d: "Últimos 30 días",
+    jobType: "Tipo de trabajo",
+    fullTime: "Tiempo completo",
+    partTime: "Tiempo parcial",
+    remote: "Remoto",
+    contract: "Contrato",
+    experience: "Experiencia",
+    entryLevel: "Nivel de entrada",
+    midLevel: "Nivel intermedio",
+    senior: "Nivel senior",
+    results: "Resultados: {count} empleos encontrados"
+  },
+  fr: {
+    title: "Trouvez votre prochain emploi",
+    subtitle: "Recherchez parmi 500K+ offres d'emploi dans le monde",
+    searchPlaceholder: "Rechercher un emploi...",
+    locationPlaceholder: "Localisation...",
+    searchBtn: "Rechercher",
+    datePublished: "Date de publication",
+    last24h: "Dernières 24 heures",
+    last7d: "7 derniers jours",
+    last30d: "30 derniers jours",
+    jobType: "Type d'emploi",
+    fullTime: "Temps plein",
+    partTime: "Temps partiel",
+    remote: "Télétravail",
+    contract: "Contrat",
+    experience: "Expérience",
+    entryLevel: "Débutant",
+    midLevel: "Intermédiaire",
+    senior: "Senior",
+    results: "Résultats: {count} emplois trouvés"
+  },
+  de: {
+    title: "Finde deinen nächsten Job",
+    subtitle: "Suche unter 500K+ Stellenangeboten weltweit",
+    searchPlaceholder: "Stellen durchsuchen...",
+    locationPlaceholder: "Standort...",
+    searchBtn: "Suchen",
+    datePublished: "Veröffentlichungsdatum",
+    last24h: "Letzte 24 Stunden",
+    last7d: "Letzte 7 Tage",
+    last30d: "Letzte 30 Tage",
+    jobType: "Stellentyp",
+    fullTime: "Vollzeit",
+    partTime: "Teilzeit",
+    remote: "Remote",
+    contract: "Vertrag",
+    experience: "Erfahrung",
+    entryLevel: "Anfänger",
+    midLevel: "Mittelstufe",
+    senior: "Senior",
+    results: "Ergebnisse: {count} Stellen gefunden"
+  },
+  it: {
+    title: "Trova il tuo prossimo lavoro",
+    subtitle: "Cerca tra 500K+ offerte di lavoro in tutto il mondo",
+    searchPlaceholder: "Cerca lavori...",
+    locationPlaceholder: "Posizione...",
+    searchBtn: "Cerca",
+    datePublished: "Data di pubblicazione",
+    last24h: "Ultime 24 ore",
+    last7d: "Ultimi 7 giorni",
+    last30d: "Ultimi 30 giorni",
+    jobType: "Tipo di lavoro",
+    fullTime: "Tempo pieno",
+    partTime: "Tempo parziale",
+    remote: "Remoto",
+    contract: "Contratto",
+    experience: "Esperienza",
+    entryLevel: "Livello base",
+    midLevel: "Livello intermedio",
+    senior: "Senior",
+    results: "Risultati: {count} lavori trovati"
+  },
+  pt: {
+    title: "Encontre seu próximo trabalho",
+    subtitle: "Procure entre 500K+ empregos em todo o mundo",
+    searchPlaceholder: "Pesquisar empregos...",
+    locationPlaceholder: "Localização...",
+    searchBtn: "Pesquisar",
+    datePublished: "Data de publicação",
+    last24h: "Últimas 24 horas",
+    last7d: "Últimos 7 dias",
+    last30d: "Últimos 30 dias",
+    jobType: "Tipo de trabalho",
+    fullTime: "Tempo integral",
+    partTime: "Tempo parcial",
+    remote: "Remoto",
+    contract: "Contrato",
+    experience: "Experiência",
+    entryLevel: "Nível iniciante",
+    midLevel: "Nível intermediário",
+    senior: "Senior",
+    results: "Resultados: {count} empregos encontrados"
+  },
+  ja: {
+    title: "次の仕事を見つけよう",
+    subtitle: "世界中の500K+求人から検索",
+    searchPlaceholder: "求人を検索...",
+    locationPlaceholder: "場所...",
+    searchBtn: "検索",
+    datePublished: "公開日",
+    last24h: "過去24時間",
+    last7d: "過去7日間",
+    last30d: "過去30日間",
+    jobType: "職種",
+    fullTime: "正社員",
+    partTime: "パートタイム",
+    remote: "リモート",
+    contract: "契約",
+    experience: "経験",
+    entryLevel: "初級",
+    midLevel: "中級",
+    senior: "シニア",
+    results: "結果：{count}件の求人が見つかりました"
+  },
+  ko: {
+    title: "다음 직업을 찾으세요",
+    subtitle: "전 세계 500K+ 채용공고 검색",
+    searchPlaceholder: "채용공고 검색...",
+    locationPlaceholder: "위치...",
+    searchBtn: "검색",
+    datePublished: "게시 날짜",
+    last24h: "지난 24시간",
+    last7d: "지난 7일",
+    last30d: "지난 30일",
+    jobType: "직무 유형",
+    fullTime: "정규직",
+    partTime: "시간제",
+    remote: "원격 근무",
+    contract: "계약직",
+    experience: "경력",
+    entryLevel: "초급",
+    midLevel: "중급",
+    senior: "시니어",
+    results: "결과: {count}개의 채용공고 찾음"
+  },
+  ar: {
+    title: "ابحث عن وظيفتك التالية",
+    subtitle: "ابحث بين 500K+ وظيفة في جميع أنحاء العالم",
+    searchPlaceholder: "البحث عن وظائف...",
+    locationPlaceholder: "الموقع...",
+    searchBtn: "بحث",
+    datePublished: "تاريخ النشر",
+    last24h: "آخر 24 ساعة",
+    last7d: "آخر 7 أيام",
+    last30d: "آخر 30 يومًا",
+    jobType: "نوع الوظيفة",
+    fullTime: "بدوام كامل",
+    partTime: "بدوام جزئي",
+    remote: "عن بُعد",
+    contract: "عقد",
+    experience: "الخبرة",
+    entryLevel: "مستوى الدخول",
+    midLevel: "المستوى الأوسط",
+    senior: "أول",
+    results: "النتائج: {count} وظيفة وجدت"
   }
+};
+
+let currentLanguage = localStorage.getItem('jobsLanguage') || 'en';
+
+function setLanguage(lang) {
+  currentLanguage = lang;
+  localStorage.setItem('jobsLanguage', lang);
+  updateUI();
+  document.getElementById('langDropdown').style.display = 'none';
+  document.getElementById('currentLang').textContent = lang.toUpperCase();
+  
+  // Mark active option
+  document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function toggleLangDropdown() {
+  const dropdown = document.getElementById('langDropdown');
+  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
+
+function t(key) {
+  return translations[currentLanguage][key] || translations['en'][key];
+}
+
+function updateUI() {
+  document.getElementById('title').textContent = t('title');
+  document.getElementById('subtitle').textContent = t('subtitle');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+  document.getElementById('locationInput').placeholder = t('locationPlaceholder');
+  document.getElementById('searchBtn').textContent = t('searchBtn');
+}
+
+// Initialize
+updateUI();
+document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
+
+const sampleJobs = [
+  { id: 1, title: "Senior Software Engineer", company: "Tech Company", location: "Remote", type: "full-time", description: "Experienced software engineer needed." },
+  { id: 2, title: "Product Manager", company: "StartUp Inc", location: "San Francisco, CA", type: "full-time", description: "Lead product strategy." },
+  { id: 3, title: "Data Analyst", company: "Finance Corp", location: "New York, NY", type: "full-time", description: "Analyze financial data." }
 ];
 
-let currentPage = 1;
-const jobsPerPage = 10;
-let filteredJobs = [...sampleJobs];
-
-function displayJobs(jobs, page = 1) {
-  const start = (page - 1) * jobsPerPage;
-  const end = start + jobsPerPage;
-  const pageJobs = jobs.slice(start, end);
-  
+function displayJobs(jobs) {
   const container = document.getElementById('jobsContainer');
-  container.innerHTML = pageJobs.map(job => `
+  container.innerHTML = jobs.map(job => `
     <div class="job-card">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div style="flex: 1;">
-          <div class="job-title">${job.title}</div>
-          <div class="company-name">${job.company}</div>
-          <div class="job-meta">
-            <span>📍 ${job.location}</span>
-            <span>⏰ ${job.datePosted}</span>
-          </div>
-          <div class="job-desc">${job.description}</div>
-          <div style="font-size: 13px; color: #0066cc; font-weight: 600; margin-top: 0.5rem;">
-            ${job.salary ? job.salary : 'Salary not disclosed'}
-          </div>
-        </div>
-        <button class="save-btn" onclick="toggleSave(${job.id})">♡</button>
-      </div>
+      <div class="job-title">${job.title}</div>
+      <div class="company-name">${job.company}</div>
+      <div class="job-meta">📍 ${job.location}</div>
+      <div class="job-desc">${job.description}</div>
     </div>
   `).join('');
   
-  document.getElementById('resultCount').textContent = `Results: ${jobs.length} jobs found`;
-  
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
-  displayPagination(totalPages, page);
-}
-
-function displayPagination(totalPages, currentPage) {
-  const pagination = document.getElementById('pagination');
-  pagination.innerHTML = '';
-  
-  for (let i = 1; i <= totalPages; i++) {
-    const li = document.createElement('li');
-    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-    li.innerHTML = `<a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>`;
-    pagination.appendChild(li);
-  }
-}
-
-function goToPage(page) {
-  currentPage = page;
-  displayJobs(filteredJobs, page);
-  window.scrollTo(0, 0);
+  document.getElementById('resultCount').textContent = t('results').replace('{count}', jobs.length);
 }
 
 function searchJobs() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const location = document.getElementById('locationInput').value.toLowerCase();
-  
-  filteredJobs = sampleJobs.filter(job => 
-    (job.title.toLowerCase().includes(query) ||
-     job.company.toLowerCase().includes(query) ||
-     job.description.toLowerCase().includes(query)) &&
-    (location === '' || job.location.toLowerCase().includes(location))
-  );
-  
-  currentPage = 1;
-  displayJobs(filteredJobs);
+  displayJobs(sampleJobs);
 }
 
-function applyFilters() {
-  const dateFilter = document.getElementById('dateFilter').value;
-  const typeFilter = document.getElementById('typeFilter').value;
-  const experienceFilter = document.getElementById('experienceFilter').value;
-  const placementFilter = document.getElementById('placementFilter').value;
-  const salaryFilter = document.getElementById('salaryFilter').value;
-  
-  filteredJobs = sampleJobs.filter(job => {
-    if (typeFilter && job.type.toLowerCase() !== typeFilter.toLowerCase()) return false;
-    if (experienceFilter && job.experience !== experienceFilter) return false;
-    if (placementFilter && !job.location.toLowerCase().includes(placementFilter.toLowerCase())) return false;
-    return true;
-  });
-  
-  currentPage = 1;
-  displayJobs(filteredJobs);
-}
-
-function toggleSave(jobId) {
-  const btn = event.target;
-  btn.textContent = btn.textContent === '♡' ? '♥️' : '♡';
-  btn.classList.toggle('saved');
-}
+function applyFilters() {}
 
 displayJobs(sampleJobs);
 </script>
