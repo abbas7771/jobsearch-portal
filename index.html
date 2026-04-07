@@ -493,22 +493,74 @@ function updateUI() {
 updateUI();
 document.getElementById('currentLang').textContent = currentLanguage.toUpperCase();
 
+const jobTranslations = {
+  job1: {
+    en: { title: "Senior Software Engineer", company: "Tech Company", location: "Remote", description: "Experienced software engineer needed." },
+    ru: { title: "Старший инженер-программист", company: "Tech Company", location: "Удаленно", description: "Требуется опытный инженер-программист." },
+    tr: { title: "Kıdemli Yazılım Mühendisi", company: "Tech Company", location: "Uzaktan", description: "Deneyimli yazılım mühendisi gerekli." },
+    zh: { title: "高级软件工程师", company: "Tech Company", location: "远程", description: "需要有经验的软件工程师。" },
+    es: { title: "Ingeniero de Software Senior", company: "Tech Company", location: "Remoto", description: "Se necesita ingeniero de software experimentado." },
+    fr: { title: "Ingénieur Logiciel Senior", company: "Tech Company", location: "Télétravail", description: "Ingénieur logiciel expérimenté requis." },
+    de: { title: "Senior-Softwareentwickler", company: "Tech Company", location: "Remote", description: "Erfahrener Softwareentwickler erforderlich." },
+    it: { title: "Ingegnere Software Senior", company: "Tech Company", location: "Remoto", description: "Ingegnere software esperto richiesto." },
+    pt: { title: "Engenheiro de Software Sênior", company: "Tech Company", location: "Remoto", description: "Engenheiro de software experiente necessário." },
+    ja: { title: "シニアソフトウェアエンジニア", company: "Tech Company", location: "リモート", description: "経験豊富なソフトウェアエンジニアが必要です。" },
+    ko: { title: "시니어 소프트웨어 엔지니어", company: "Tech Company", location: "원격 근무", description: "경험이 풍부한 소프트웨어 엔지니어가 필요합니다." },
+    ar: { title: "مهندس برمجيات أول", company: "Tech Company", location: "عن بُعد", description: "مهندس برمجيات ذو خبرة مطلوب." }
+  },
+  job2: {
+    en: { title: "Product Manager", company: "StartUp Inc", location: "San Francisco, CA", description: "Lead product strategy." },
+    ru: { title: "Менеджер продукта", company: "StartUp Inc", location: "Сан-Франциско, Калифорния", description: "Руководить стратегией продукта." },
+    tr: { title: "Ürün Müdürü", company: "StartUp Inc", location: "San Francisco, CA", description: "Ürün stratejisini yönetin." },
+    zh: { title: "产品经理", company: "StartUp Inc", location: "旧金山，加州", description: "领导产品战略。" },
+    es: { title: "Gerente de Producto", company: "StartUp Inc", location: "San Francisco, CA", description: "Liderar la estrategia del producto." },
+    fr: { title: "Chef de Produit", company: "StartUp Inc", location: "San Francisco, CA", description: "Diriger la stratégie produit." },
+    de: { title: "Produktmanager", company: "StartUp Inc", location: "San Francisco, CA", description: "Produktstrategie führen." },
+    it: { title: "Product Manager", company: "StartUp Inc", location: "San Francisco, CA", description: "Guidare la strategia dei prodotti." },
+    pt: { title: "Gerenciador de Produto", company: "StartUp Inc", location: "San Francisco, CA", description: "Liderar estratégia de produto." },
+    ja: { title: "プロダクトマネージャー", company: "StartUp Inc", location: "サンフランシスコ、カリフォルニア州", description: "製品戦略をリードします。" },
+    ko: { title: "제품 관리자", company: "StartUp Inc", location: "샌프란시스코, 캘리포니아", description: "제품 전략을 이끄세요." },
+    ar: { title: "مدير المنتج", company: "StartUp Inc", location: "سان فرانسيسكو، كاليفورنيا", description: "قيادة استراتيجية المنتج." }
+  },
+  job3: {
+    en: { title: "Data Analyst", company: "Finance Corp", location: "New York, NY", description: "Analyze financial data." },
+    ru: { title: "Аналитик данных", company: "Finance Corp", location: "Нью-Йорк, Нью-Йорк", description: "Анализ финансовых данных." },
+    tr: { title: "Veri Analisti", company: "Finance Corp", location: "New York, NY", description: "Finansal verileri analiz edin." },
+    zh: { title: "数据分析师", company: "Finance Corp", location: "纽约，纽约", description: "分析财务数据。" },
+    es: { title: "Analista de Datos", company: "Finance Corp", location: "Nueva York, Nueva York", description: "Analizar datos financieros." },
+    fr: { title: "Analyste de Données", company: "Finance Corp", location: "New York, NY", description: "Analyser les données financières." },
+    de: { title: "Datenanalyst", company: "Finance Corp", location: "New York, NY", description: "Finanzielle Daten analysieren." },
+    it: { title: "Analista di Dati", company: "Finance Corp", location: "New York, NY", description: "Analizzare i dati finanziari." },
+    pt: { title: "Analista de Dados", company: "Finance Corp", location: "Nova York, Nova York", description: "Analisar dados financeiros." },
+    ja: { title: "データアナリスト", company: "Finance Corp", location: "ニューヨーク州ニューヨーク", description: "財務データを分析します。" },
+    ko: { title: "데이터 분석가", company: "Finance Corp", location: "뉴욕, 뉴욕", description: "재무 데이터를 분석합니다." },
+    ar: { title: "محلل البيانات", company: "Finance Corp", location: "نيويورك، نيويورك", description: "تحليل البيانات المالية." }
+  }
+};
+
+function getJobData(jobId) {
+  return jobTranslations[jobId][currentLanguage] || jobTranslations[jobId]['en'];
+}
+
 const sampleJobs = [
-  { id: 1, title: "Senior Software Engineer", company: "Tech Company", location: "Remote", type: "full-time", description: "Experienced software engineer needed." },
-  { id: 2, title: "Product Manager", company: "StartUp Inc", location: "San Francisco, CA", type: "full-time", description: "Lead product strategy." },
-  { id: 3, title: "Data Analyst", company: "Finance Corp", location: "New York, NY", type: "full-time", description: "Analyze financial data." }
+  { id: "job1", type: "full-time" },
+  { id: "job2", type: "full-time" },
+  { id: "job3", type: "full-time" }
 ];
 
 function displayJobs(jobs) {
   const container = document.getElementById('jobsContainer');
-  container.innerHTML = jobs.map(job => `
-    <div class="job-card">
-      <div class="job-title">${job.title}</div>
-      <div class="company-name">${job.company}</div>
-      <div class="job-meta">📍 ${job.location}</div>
-      <div class="job-desc">${job.description}</div>
-    </div>
-  `).join('');
+  container.innerHTML = jobs.map(job => {
+    const jobData = getJobData(job.id);
+    return `
+      <div class="job-card">
+        <div class="job-title">${jobData.title}</div>
+        <div class="company-name">${jobData.company}</div>
+        <div class="job-meta">📍 ${jobData.location}</div>
+        <div class="job-desc">${jobData.description}</div>
+      </div>
+    `;
+  }).join('');
   
   document.getElementById('resultCount').textContent = t('results').replace('{count}', jobs.length);
 }
