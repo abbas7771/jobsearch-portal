@@ -310,6 +310,22 @@
   </div>
 </div>
 
+<!-- Email Gate Modal -->
+<div id="emailModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeEmailModal()">✕</button>
+    <div style="text-align:center;">
+      <h2 id="emailTitle" style="color:var(--primary); margin-bottom:1rem;">Subscribe to get access</h2>
+      <p id="emailSubtitle" style="color:var(--secondary); margin-bottom:1.5rem;">Get exclusive job opportunities and career tips</p>
+      <input type="email" id="emailInput" placeholder="your@email.com" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:6px; font-size:14px; margin-bottom:1rem;">
+      <button onclick="submitEmail()" id="submitEmailBtn" style="width:100%; padding:0.8rem; background:var(--primary); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
+        Subscribe & Continue
+      </button>
+      <p id="privacyNote" style="font-size:12px; color:#999; margin-top:1rem;">We respect your privacy. No spam.</p>
+    </div>
+  </div>
+</div>
+
 <script>
 const jobsData = [
   { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more roles available", type: "full-time", fullDesc: "Join 9 Mothers as they revolutionize robotics. Lead teams, drive innovation, and shape the future of automation." },
@@ -336,7 +352,75 @@ const trans = {
   pt: { title: "Portal Global de Empregos", subtitle: "Encontre empregos remotos em todo o mundo", searchBtn: "Pesquisar", results: "{count} empregos encontrados", datePublished: "Data de Publicação", last24h: "Últimas 24 horas", last7d: "Últimos 7 dias", last30d: "Últimos 30 dias", jobType: "Tipo de Emprego", fullTime: "Tempo integral", partTime: "Tempo parcial", remote: "Remoto", contract: "Contrato", experience: "Experiência", entry: "Nível Iniciante", mid: "Nível Intermediário", senior: "Senior", location: "Tipo de Localização", office: "Escritório", hybrid: "Híbrido", salary: "Salário", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Candidatar-se Agora" },
   ja: { title: "グローバルジョブポータル", subtitle: "世界中のリモートジョブを検索", searchBtn: "検索", results: "{count} 件の職位が見つかりました", datePublished: "公開日", last24h: "過去24時間", last7d: "過去7日間", last30d: "過去30日間", jobType: "職種", fullTime: "フルタイム", partTime: "パートタイム", remote: "リモート", contract: "契約", experience: "経験", entry: "初級レベル", mid: "中級レベル", senior: "シニア", location: "勤務地タイプ", office: "オフィス", hybrid: "ハイブリッド", salary: "給与", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "今すぐ応募" },
   ko: { title: "글로벌 채용 포털", subtitle: "전 세계 원격 직업 찾기", searchBtn: "검색", results: "{count}개의 채용공고를 찾았습니다", datePublished: "게시 날짜", last24h: "지난 24시간", last7d: "지난 7일", last30d: "지난 30일", jobType: "직무 유형", fullTime: "전일제", partTime: "시간제", remote: "원격 근무", contract: "계약", experience: "경험", entry: "초급", mid: "중급", senior: "시니어", location: "근무지 유형", office: "사무실", hybrid: "하이브리드", salary: "급여", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "지금 신청" },
-  ar: { title: "بوابة الوظائف العالمية", subtitle: "ابحث عن الوظائف البعيدة في جميع أنحاء العالم", searchBtn: "بحث", results: "تم العثور على {count} وظيفة", datePublished: "تاريخ النشر", last24h: "آخر 24 ساعة", last7d: "آخر 7 أيام", last30d: "آخر 30 يومًا", jobType: "نوع الوظيفة", fullTime: "بدوام كامل", partTime: "بدوام جزئي", remote: "عن بُعد", contract: "عقد", experience: "الخبرة", entry: "مستوى الدخول", mid: "المستوى الأوسط", senior: "أول", location: "نوع الموقع", office: "في المكتب", hybrid: "مختلط", salary: "الراتب", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "تقدم الآن" }
+  ar: { title: "بوابة الوظائف العالمية", subtitle: "ابحث عن الوظائف البعيدة في جميع أنحاء العالم", searchBtn: "بحث", results: "تم العثور على {count} وظيفة", datePublished: "تاريخ النشر", last24h: "آخر 24 ساعة", last7d: "آخر 7 أيام", last30d: "آخر 30 يومًا", jobType: "نوع الوظيفة", fullTime: "بدوام كامل", partTime: "بدوام جزئي", remote: "عن بُعد", contract: "عقد", experience: "الخبرة", entry: "مستوى الدخول", mid: "المستوى الأوسط", senior: "أول", location: "نوع الموقع", office: "في المكتب", hybrid: "مختلط", salary: "الراتب", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "تقدم الآن", emailTitle: "الاشتراك للوصول", emailSubtitle: "احصل على فرص عمل حصرية ونصائح مهنية", submit: "اشترك وتابع", submitting: "جاري الإرسال...", invalidEmail: "يرجى إدخال بريد إلكتروني صحيح" }
+};
+
+// Add to all languages
+trans.en.emailTitle = "Subscribe to get access";
+trans.en.emailSubtitle = "Get exclusive job opportunities and career tips";
+trans.en.submit = "Subscribe & Continue";
+trans.en.submitting = "Submitting...";
+trans.en.invalidEmail = "Please enter a valid email";
+
+trans.ru.emailTitle = "Подпишитесь для доступа";
+trans.ru.emailSubtitle = "Получайте эксклюзивные возможности трудоустройства и советы по карьере";
+trans.ru.submit = "Подписаться и продолжить";
+trans.ru.submitting = "Отправка...";
+trans.ru.invalidEmail = "Пожалуйста, введите действительный адрес электронной почты";
+
+trans.tr.emailTitle = "Erişim için abone olun";
+trans.tr.emailSubtitle = "Özel iş fırsatları ve kariyer ipuçları alın";
+trans.tr.submit = "Abone Ol ve Devam Et";
+trans.tr.submitting = "Gönderiliyor...";
+trans.tr.invalidEmail = "Lütfen geçerli bir e-posta adresi girin";
+
+trans.zh.emailTitle = "订阅以获取访问权限";
+trans.zh.emailSubtitle = "获得独家工作机会和职业建议";
+trans.zh.submit = "订阅并继续";
+trans.zh.submitting = "正在提交...";
+trans.zh.invalidEmail = "请输入有效的电子邮件地址";
+
+trans.es.emailTitle = "Suscribirse para obtener acceso";
+trans.es.emailSubtitle = "Obtenga oportunidades de trabajo exclusivas y consejos de carrera";
+trans.es.submit = "Suscribirse y continuar";
+trans.es.submitting = "Enviando...";
+trans.es.invalidEmail = "Por favor ingrese una dirección de correo electrónico válida";
+
+trans.fr.emailTitle = "S'abonner pour accéder";
+trans.fr.emailSubtitle = "Obtenez des opportunités d'emploi exclusives et des conseils de carrière";
+trans.fr.submit = "S'abonner et continuer";
+trans.fr.submitting = "Envoi...";
+trans.fr.invalidEmail = "Veuillez entrer une adresse e-mail valide";
+
+trans.de.emailTitle = "Abonnieren um Zugang zu erhalten";
+trans.de.emailSubtitle = "Erhalten Sie exklusive Jobmöglichkeiten und Karrieretipps";
+trans.de.submit = "Abonnieren und fortfahren";
+trans.de.submitting = "Wird eingereicht...";
+trans.de.invalidEmail = "Bitte geben Sie eine gültige E-Mail-Adresse ein";
+
+trans.it.emailTitle = "Iscriviti per accedere";
+trans.it.emailSubtitle = "Ottieni opportunità di lavoro esclusive e consigli di carriera";
+trans.it.submit = "Iscriviti e continua";
+trans.it.submitting = "Invio in corso...";
+trans.it.invalidEmail = "Inserisci un indirizzo email valido";
+
+trans.pt.emailTitle = "Inscreva-se para obter acesso";
+trans.pt.emailSubtitle = "Obtenha oportunidades de emprego exclusivas e dicas de carreira";
+trans.pt.submit = "Inscrever-se e continuar";
+trans.pt.submitting = "Enviando...";
+trans.pt.invalidEmail = "Por favor, insira um endereço de e-mail válido";
+
+trans.ja.emailTitle = "アクセスするために購読";
+trans.ja.emailSubtitle = "独占的な求人機会とキャリアのヒントを取得";
+trans.ja.submit = "購読して続行";
+trans.ja.submitting = "送信中...";
+trans.ja.invalidEmail = "有効なメールアドレスを入力してください";
+
+trans.ko.emailTitle = "액세스하려면 구독하세요";
+trans.ko.emailSubtitle = "독점 채용 기회 및 경력 팁을 받으세요";
+trans.ko.submit = "구독 및 계속";
+trans.ko.submitting = "제출 중...";
+trans.ko.invalidEmail = "유효한 이메일 주소를 입력하세요"
 };
 
 let currentLang = localStorage.getItem('jobLang') || 'en';
@@ -398,8 +482,49 @@ function closeJobModal() {
 }
 
 function applyJob(jobId) {
-  alert('Application submitted for job #' + jobId);
+  const job = jobs.find(j => j.id === jobId);
+  window.currentJobId = jobId;
+  window.currentJobUrl = job.url || 'https://jobsearch.ink'; // Fallback URL
+  
+  // Show email gate modal
+  document.getElementById('emailModal').classList.add('active');
   closeJobModal();
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('active');
+}
+
+function submitEmail() {
+  const email = document.getElementById('emailInput').value;
+  if (!email || !email.includes('@')) {
+    alert(t('invalidEmail') || 'Please enter a valid email');
+    return;
+  }
+  
+  // Save to KuponHub database via Google Forms
+  const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf_K0JlZxG4r0Z3Y0O0_K0K0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0Z0/formResponse';
+  const formData = new FormData();
+  formData.append('entry.123456', email); // Replace with actual Google Form field ID
+  
+  fetch(formUrl, {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors'
+  }).then(() => {
+    // After email saved, redirect to job
+    setTimeout(() => {
+      window.location.href = window.currentJobUrl;
+    }, 1000);
+  }).catch(() => {
+    // Redirect even if save fails
+    setTimeout(() => {
+      window.location.href = window.currentJobUrl;
+    }, 1000);
+  });
+  
+  document.getElementById('submitEmailBtn').disabled = true;
+  document.getElementById('submitEmailBtn').textContent = t('submitting') || 'Submitting...';
 }
 
 function searchJobs() {
