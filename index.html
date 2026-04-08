@@ -156,8 +156,22 @@
 </div>
 
 <script>
-const jobs = [
-  { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more", type: "full-time", fullDesc: "Join 9 Mothers revolutionizing robotics. Lead teams, drive innovation." },
+let jobs = [];
+
+// Load jobs from JSON file with cache bypass
+fetch('jobs-db.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    jobs = Array.isArray(data) ? data : Object.values(data);
+    console.log('✅ Loaded ' + jobs.length + ' jobs from jobs-db.json');
+    updateUI();
+    searchJobs();
+  })
+  .catch(err => {
+    console.error('❌ Error loading jobs:', err);
+    // Fallback to hardcoded jobs if JSON fails
+    jobs = [
+      { id: 1, title: "9 Mothers Is Hiring", company: "9 Mothers (YC P26)", location: "Remote", description: "Lead Robotics and more", type: "full-time", fullDesc: "Join 9 Mothers revolutionizing robotics. Lead teams, drive innovation." },
   { id: 2, title: "HackerRank Is Hiring", company: "HackerRank", location: "New York", description: "Developer hiring platform", type: "full-time", fullDesc: "Help companies hire the best developers. Work on trusted platform." },
   { id: 3, title: "PostHog Is Hiring", company: "PostHog", location: "Remote", description: "Product analytics platform", type: "full-time", fullDesc: "Build analytics tools for engineers." },
   { id: 4, title: "Hightouch Is Hiring", company: "Hightouch", location: "Remote", description: "Data integration platform", type: "full-time", fullDesc: "Work on data infrastructure." },
@@ -166,8 +180,11 @@ const jobs = [
   { id: 7, title: "Voiceflow Is Hiring", company: "Voiceflow", location: "Remote", description: "Conversational AI platform", type: "full-time", fullDesc: "Build conversational AI." },
   { id: 8, title: "Patreon Is Hiring", company: "Patreon", location: "Remote", description: "Creator platform and payments", type: "full-time", fullDesc: "Empower creators worldwide." },
   { id: 9, title: "Anthropic Is Hiring", company: "Anthropic", location: "San Francisco", description: "AI safety and research", type: "full-time", fullDesc: "Work on AI safety research." },
-  { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development", type: "full-time", fullDesc: "Lead engineering initiatives." }
-];
+      { id: 10, title: "Senior Software Engineer", company: "Tech Corp", location: "Remote", description: "Full-stack development", type: "full-time", fullDesc: "Lead engineering initiatives." }
+    ];
+    updateUI();
+    searchJobs();
+  });
 
 const trans = {
   en: { title: "Global Jobs Portal", subtitle: "Find remote jobs worldwide", searchBtn: "Search", results: "Found {count} jobs", datePublished: "Date Published", last24h: "Last 24 hours", last7d: "Last 7 days", last30d: "Last 30 days", jobType: "Job Type", fullTime: "Full-time", partTime: "Part-time", remote: "Remote", contract: "Contract", experience: "Experience", entry: "Entry Level", mid: "Mid Level", senior: "Senior", location: "Location", office: "Office", hybrid: "Hybrid", salary: "Salary", salary030k: "$0-30K", salary3060k: "$30-60K", salary60100k: "$60-100K", salary100k: "$100K+", applyBtn: "Apply Now", emailTitle: "Subscribe to get access", emailSubtitle: "Get exclusive job opportunities", submitBtn: "Subscribe & Continue" },
