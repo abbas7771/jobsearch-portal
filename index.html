@@ -240,23 +240,40 @@ function changeLang(lang) {
 
 function displayJobs(jobsToShow) {
   const container = document.getElementById('jobsContainer');
-  container.innerHTML = jobsToShow.map(job => `<div class="job-card" onclick="openJobModal(${job.id})"><div class="job-title">${job.title}</div><div class="company-name">${job.company}</div><div class="job-meta">📍 ${job.location}</div><div class="job-desc">${job.description}</div></div>`).join('');
+  container.innerHTML = jobsToShow.map(job => {
+    const safeId = String(job.id).replace(/'/g, "\\'");
+    return `<div class="job-card" style="cursor:pointer; transition: all 0.2s;" onclick="openJobModal('${safeId}')"><div class="job-title">${job.title}</div><div class="company-name">${job.company}</div><div class="job-meta">📍 ${job.location}</div><div class="job-desc">${job.description}</div></div>`;
+  }).join('');
   document.getElementById('resultCount').textContent = t('results').replace('{count}', jobsToShow.length);
+  console.log('📊 Displayed ' + jobsToShow.length + ' jobs');
 }
 
 function openJobModal(jobId) {
-  const job = jobs.find(j => j.id === jobId);
-  if (!job) return;
-  document.getElementById('jobDetails').innerHTML = `<div class="modal-title">${job.title}</div><div class="modal-company">${job.company}</div><div class="modal-meta"><div class="modal-meta-item">📍 ${job.location}</div><div class="modal-meta-item">💼 ${t('fullTime')}</div></div><div class="modal-description">${job.fullDesc}</div><button class="modal-btn" onclick="applyJob(${job.id})">${t('applyBtn')}</button>`;
+  console.log('Opening job modal for:', jobId);
+  const job = jobs.find(j => String(j.id) === String(jobId));
+  if (!job) {
+    console.error('Job not found:', jobId, 'Available:', jobs.map(j => j.id));
+    return;
+  }
+  const safeId = String(job.id).replace(/'/g, "\\'");
+  document.getElementById('jobDetails').innerHTML = `<div class="modal-title">${job.title}</div><div class="modal-company">${job.company}</div><div class="modal-meta"><div class="modal-meta-item">📍 ${job.location}</div><div class="modal-meta-item">💼 ${t('fullTime')}</div></div><div class="modal-description">${job.fullDesc || job.description || 'Job description not available'}</div><button class="modal-btn" onclick="applyJob('${safeId}')">${t('applyBtn')}</button>`;
   document.getElementById('jobModal').classList.add('active');
+  console.log('✅ Modal opened for:', job.title);
 }
 
 function closeJobModal() { document.getElementById('jobModal').classList.remove('active'); }
 
 function applyJob(jobId) {
+  console.log('Apply job:', jobId);
   window.jobId = jobId;
+  const job = jobs.find(j => String(j.id) === String(jobId));
+  if (job) {
+    const title = document.getElementById('emailTitle');
+    if (title) title.textContent = t('emailTitle') + ' - ' + job.title;
+  }
   document.getElementById('emailModal').classList.add('active');
   closeJobModal();
+  console.log('✅ Email modal opened');
 }
 
 function closeEmailModal() { document.getElementById('emailModal').classList.remove('active'); }
